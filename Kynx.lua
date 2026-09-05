@@ -57,7 +57,7 @@ local kynx = {
 	Flags = {},
 	Tabs = {},
 	Icons = (function()
-      	["a-arrow-down"] = "rbxassetid://92867583610071",
+    ["a-arrow-down"] = "rbxassetid://92867583610071",
 	["a-arrow-up"] = "rbxassetid://132318504999733",
 	["a-large-small"] = "rbxassetid://111491496660216",
 	["accessibility"] = "rbxassetid://114029945302017",
@@ -1772,8 +1772,7 @@ local kynx = {
 	["zodiac-scorpio"] = "rbxassetid://113640924054631",
 	["zodiac-taurus"] = "rbxassetid://123053219704400",
 	["zodiac-virgo"] = "rbxassetid://99462994613661"
-		return {}
-	end)()
+	
 }
 
 local ViewportSize = workspace.CurrentCamera.ViewportSize
@@ -2972,4 +2971,4 @@ function kynx:MakeWindow(Configs)
 	return Window
 end
 
-return kynx
+return kynx 
