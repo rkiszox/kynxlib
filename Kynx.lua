@@ -8,7 +8,7 @@ local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 local PlayerMouse = Player:GetMouse()
 
-local redzlib = {
+local kynx = {
 	Themes = {
 		Darker = {
 			["Color Hub 1"] = ColorSequence.new({
@@ -1778,12 +1778,12 @@ local redzlib = {
 
 local ViewportSize = workspace.CurrentCamera.ViewportSize
 local UIScale = ViewportSize.Y / 450
-local Settings = redzlib.Settings
-local Flags = redzlib.Flags
+local Settings = kynx.Settings
+local Flags = kynx.Flags
 
 local SetProps, SetChildren, InsertTheme, Create do
 	InsertTheme = function(Instance, Type)
-		table.insert(redzlib.Instances, {Instance = Instance, Type = Type})
+		table.insert(kynx.Instances, {Instance = Instance, Type = Type})
 		return Instance
 	end
 	SetChildren = function(Instance, Children)
@@ -1819,13 +1819,13 @@ local SetProps, SetChildren, InsertTheme, Create do
 		if readfile and isfile and isfile(file) then
 			local decode = HttpService:JSONDecode(readfile(file))
 			if type(decode) == "table" then
-				if rawget(decode, "UISize") then redzlib.Save["UISize"] = decode["UISize"] end
-				if rawget(decode, "TabSize") then redzlib.Save["TabSize"] = decode["TabSize"] end
-				if rawget(decode, "Theme") and VerifyTheme(decode["Theme"]) then redzlib.Save["Theme"] = decode["Theme"] end
+				if rawget(decode, "UISize") then kynx.Save["UISize"] = decode["UISize"] end
+				if rawget(decode, "TabSize") then kynx.Save["TabSize"] = decode["TabSize"] end
+				if rawget(decode, "Theme") and VerifyTheme(decode["Theme"]) then kynx.Save["Theme"] = decode["Theme"] end
 			end
 		end
 	end
-	pcall(Save, "redz library V5.json")
+	pcall(Save, "kynx library.json")
 end
 
 local Funcs = {} do
@@ -1862,7 +1862,7 @@ local Funcs = {} do
 	end
 end
 
-local Connections, Connection = {}, redzlib.Connection do
+local Connections, Connection = {}, kynx.Connection do
 	local function NewConnectionList(List)
 		if type(List) ~= "table" then return end
 		for _,CoName in ipairs(List) do
@@ -1919,7 +1919,7 @@ local GetFlag, SetFlag, CheckFlag do
 	end)
 end
 
-local ScreenGui = Create("ScreenGui", CoreGui, {Name = "redz Library V5"}, {Create("UIScale", {Scale = UIScale, Name = "Scale"})})
+local ScreenGui = Create("ScreenGui", CoreGui, {Name = "kynx Library"}, {Create("UIScale", {Scale = UIScale, Name = "Scale"})})
 local ScreenFind = CoreGui:FindFirstChild(ScreenGui.Name)
 if ScreenFind and ScreenFind ~= ScreenGui then ScreenFind:Destroy() end
 
@@ -1975,7 +1975,7 @@ local function MakeDrag(Instance)
 end
 
 local function VerifyTheme(Theme)
-	for name,_ in pairs(redzlib.Themes) do
+	for name,_ in pairs(kynx.Themes) do
 		if name == Theme then return true end
 	end
 end
@@ -1987,11 +1987,11 @@ local function SaveJson(FileName, save)
 	end
 end
 
-local Theme = redzlib.Themes[redzlib.Save.Theme]
+local Theme = kynx.Themes[kynx.Save.Theme]
 
-local function AddEle(Name, Func) redzlib.Elements[Name] = Func end
+local function AddEle(Name, Func) kynx.Elements[Name] = Func end
 local function Make(Ele, Instance, props, ...)
-	local Element = redzlib.Elements[Ele](Instance, props, ...)
+	local Element = kynx.Elements[Ele](Instance, props, ...)
 	return Element
 end
 
@@ -2103,7 +2103,7 @@ local function GetColor(Instance)
 	return ""
 end
 
-function redzlib:GetIcon(index)
+function kynx:GetIcon(index)
 	if type(index) ~= "string" or index:find("rbxassetid://") or #index == 0 then return index end
 	local firstMatch = nil
 	index = string.lower(index):gsub("lucide", ""):gsub("-", "")
@@ -2115,13 +2115,13 @@ function redzlib:GetIcon(index)
 	return firstMatch or index
 end
 
-function redzlib:SetTheme(NewTheme)
+function kynx:SetTheme(NewTheme)
 	if not VerifyTheme(NewTheme) then return end
-	redzlib.Save.Theme = NewTheme
-	SaveJson("redz library V5.json", redzlib.Save)
-	Theme = redzlib.Themes[NewTheme]
+	kynx.Save.Theme = NewTheme
+	SaveJson("kynx library.json", kynx.Save)
+	Theme = kynx.Themes[NewTheme]
 	Connection:FireConnection("ThemeChanged", NewTheme)
-	table.foreach(redzlib.Instances, function(_,Val)
+	table.foreach(kynx.Instances, function(_,Val)
 		if Val.Type == "Gradient" then Val.Instance.Color = Theme["Color Hub 1"]
 		elseif Val.Type == "Frame" then Val.Instance.BackgroundColor3 = Theme["Color Hub 2"]
 		elseif Val.Type == "Stroke" then Val.Instance[GetColor(Val.Instance)] = Theme["Color Stroke"]
@@ -2132,14 +2132,14 @@ function redzlib:SetTheme(NewTheme)
 	end)
 end
 
-function redzlib:SetScale(NewScale)
+function kynx:SetScale(NewScale)
 	NewScale = ViewportSize.Y / math.clamp(NewScale, 300, 2000)
 	UIScale, ScreenGui.Scale.Scale = NewScale, NewScale
 end
 
-function redzlib:MakeWindow(Configs)
-	local WTitle = Configs[1] or Configs.Name or Configs.Title or "redz Library V5"
-	local WMiniText = Configs[2] or Configs.SubTitle or "by : redz9999"
+function kynx:MakeWindow(Configs)
+	local WTitle = Configs[1] or Configs.Name or Configs.Title or "kynx Library"
+	local WMiniText = Configs[2] or Configs.SubTitle or "by : kynx"
 	Settings.ScriptFile = Configs[3] or Configs.SaveFolder or false
 	local function LoadFile()
 		local File = Settings.ScriptFile
@@ -2154,7 +2154,7 @@ function redzlib:MakeWindow(Configs)
 			end
 		end
 	end;LoadFile()
-	local UISizeX, UISizeY = unpack(redzlib.Save.UISize)
+	local UISizeX, UISizeY = unpack(kynx.Save.UISize)
 	local MainFrame = InsertTheme(Create("ImageButton", ScreenGui, {
 		Size = UDim2.fromOffset(UISizeX, UISizeY),
 		Position = UDim2.new(0.5, -UISizeX/2, 0.5, -UISizeY/2),
@@ -2179,7 +2179,7 @@ function redzlib:MakeWindow(Configs)
 		TextXAlignment = "Left", TextSize = 8, Font = Enum.Font.Gotham, Name = "SubTitle"
 	}), "DarkText")
 	local MainScroll = InsertTheme(Create("ScrollingFrame", Components, {
-		Size = UDim2.new(0, redzlib.Save.TabSize, 1, -TopBar.Size.Y.Offset),
+		Size = UDim2.new(0, kynx.Save.TabSize, 1, -TopBar.Size.Y.Offset),
 		ScrollBarImageColor3 = Theme["Color Theme"],
 		Position = UDim2.new(0, 0, 1, 0), AnchorPoint = Vector2.new(0, 1),
 		ScrollBarThickness = 1.5, BackgroundTransparency = 1,
@@ -2217,13 +2217,13 @@ function redzlib:MakeWindow(Configs)
 	ControlSize2:GetPropertyChangedSignal("Position"):Connect(ControlSize)
 	ConnectSave(ControlSize1, function()
 		if not Minimized then
-			redzlib.Save.UISize = {MainFrame.Size.X.Offset, MainFrame.Size.Y.Offset}
-			SaveJson("redz library V5.json", redzlib.Save)
+			kynx.Save.UISize = {MainFrame.Size.X.Offset, MainFrame.Size.Y.Offset}
+			SaveJson("kynx library.json", kynx.Save)
 		end
 	end)
 	ConnectSave(ControlSize2, function()
-		redzlib.Save.TabSize = MainScroll.Size.X.Offset
-		SaveJson("redz library V5.json", redzlib.Save)
+		kynx.Save.TabSize = MainScroll.Size.X.Offset
+		SaveJson("kynx library.json", kynx.Save)
 	end)
 	local ButtonsFolder = Create("Folder", TopBar, {Name = "Buttons"})
 	local CloseButton = Create("ImageButton", {
@@ -2342,15 +2342,15 @@ function redzlib:MakeWindow(Configs)
 		return Dialog
 	end
 	function Window:SelectTab(TabSelect)
-		if type(TabSelect) == "number" then redzlib.Tabs[TabSelect].func:Enable()
-		else for _,Tab in pairs(redzlib.Tabs) do if Tab.Cont == TabSelect.Cont then Tab.func:Enable() end end end
+		if type(TabSelect) == "number" then kynx.Tabs[TabSelect].func:Enable()
+		else for _,Tab in pairs(kynx.Tabs) do if Tab.Cont == TabSelect.Cont then Tab.func:Enable() end end end
 	end
 	local ContainerList = {}
 	function Window:MakeTab(paste, Configs)
 		if type(paste) == "table" then Configs = paste end
 		local TName = Configs[1] or Configs.Title or "Tab!"
 		local TIcon = Configs[2] or Configs.Icon or ""
-		TIcon = redzlib:GetIcon(TIcon)
+		TIcon = kynx:GetIcon(TIcon)
 		if not TIcon:find("rbxassetid://") or TIcon:gsub("rbxassetid://", ""):len() < 6 then TIcon = false end
 		local TabSelect = Make("Button", MainScroll, {Size = UDim2.new(1, 0, 0, 24)})Make("Corner", TabSelect, UDim.new(0, 6))
 		local LabelTitle = InsertTheme(Create("TextLabel", TabSelect, {
@@ -2390,7 +2390,7 @@ function redzlib:MakeWindow(Configs)
 			end
 			Container.Parent = Containers
 			Container.Size = UDim2.new(1, 0, 1, 150)
-			table.foreach(redzlib.Tabs, function(_,Tab) if Tab.Cont ~= Container then Tab.func:Disable() end end)
+			table.foreach(kynx.Tabs, function(_,Tab) if Tab.Cont ~= Container then Tab.func:Disable() end end)
 			CreateTween({Container, "Size", UDim2.new(1, 0, 1, 0), 0.3})
 			CreateTween({LabelTitle, "TextTransparency", 0, 0.35})
 			CreateTween({LabelIcon, "ImageTransparency", 0, 0.35})
@@ -2400,7 +2400,7 @@ function redzlib:MakeWindow(Configs)
 		TabSelect.Activated:Connect(Tabs)
 		FirstTab = true
 		local Tab = {}
-		table.insert(redzlib.Tabs, {TabInfo = {Name = TName, Icon = TIcon}, func = Tab, Cont = Container})
+		table.insert(kynx.Tabs, {TabInfo = {Name = TName, Icon = TIcon}, func = Tab, Cont = Container})
 		Tab.Cont = Container
 		function Tab:Disable()
 			Container.Parent = nil
@@ -2415,7 +2415,7 @@ function redzlib:MakeWindow(Configs)
 		function Tab:AddSection(Configs)
 			local SectionName = type(Configs) == "string" and Configs or Configs[1] or Configs.Name or Configs.Title or Configs.Section
 			local SectionIcon = Configs[2] or Configs.Icon or ""
-			SectionIcon = redzlib:GetIcon(SectionIcon)
+			SectionIcon = kynx:GetIcon(SectionIcon)
 			if not SectionIcon:find("rbxassetid://") or SectionIcon:gsub("rbxassetid://", ""):len() < 6 then SectionIcon = false end
 			local SectionFrame = Create("Frame", Container, {Size = UDim2.new(1, 0, 0, 22), BackgroundTransparency = 1, Name = "Option"})
 			local SectionIconLabel
@@ -2434,7 +2434,7 @@ function redzlib:MakeWindow(Configs)
 				TextXAlignment = "Left"
 			}), "Text")
 			local Section = {}
-			table.insert(redzlib.Options, {type = "Section", Name = SectionName, func = Section})
+			table.insert(kynx.Options, {type = "Section", Name = SectionName, func = Section})
 			function Section:Visible(Bool)
 				if Bool == nil then SectionFrame.Visible = not SectionFrame.Visible return end
 				SectionFrame.Visible = Bool
@@ -2972,4 +2972,4 @@ function redzlib:MakeWindow(Configs)
 	return Window
 end
 
-return redzlib
+return kynx
