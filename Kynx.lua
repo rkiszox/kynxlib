@@ -32,7 +32,7 @@ local kynx = {
 	Options = {},
 	Flags = {},
 	Tabs = {},
-	Icons = {
+		Icons = {
     ["a-arrow-down"] = "rbxassetid://92867583610071",
 	["a-arrow-up"] = "rbxassetid://132318504999733",
 	["a-large-small"] = "rbxassetid://111491496660216",
@@ -1749,6 +1749,7 @@ local kynx = {
 	["zodiac-taurus"] = "rbxassetid://123053219704400",
 	["zodiac-virgo"] = "rbxassetid://99462994613661"
 }
+}
 
 local ViewportSize = workspace.CurrentCamera.ViewportSize
 local UIScale = ViewportSize.Y / 450
@@ -2170,11 +2171,12 @@ function kynx:MakeWindow(Configs)
 		AnchorPoint = Vector2.new(1, 1), Position = UDim2.new(1, 0, 1, 0),
 		BackgroundTransparency = 1, ClipsDescendants = true, Name = "Containers"
 	})
-	local ControlSize1, ControlSize2 = MakeDrag(Create("ImageButton", MainFrame, {
+	local ControlSize1 = MakeDrag(Create("ImageButton", MainFrame, {
 		Size = UDim2.new(0, 35, 0, 35), Position = MainFrame.Size,
 		Active = true, AnchorPoint = Vector2.new(0.8, 0.8),
 		BackgroundTransparency = 1, Name = "Control Hub Size"
-	})), MakeDrag(Create("ImageButton", MainFrame, {
+	}))
+	local ControlSize2 = MakeDrag(Create("ImageButton", MainFrame, {
 		Size = UDim2.new(0, 20, 1, -30),
 		Position = UDim2.new(0, MainScroll.Size.X.Offset, 1, 0),
 		AnchorPoint = Vector2.new(0.5, 1), Active = true,
@@ -2201,17 +2203,12 @@ function kynx:MakeWindow(Configs)
 		SaveJson("kynx library.json", kynx.Save)
 	end)
 	local ButtonsFolder = Create("Folder", TopBar, {Name = "Buttons"})
-	local ResizeButton = Create("ImageButton", {
-		Size = UDim2.new(0, 16, 0, 16), Position = UDim2.new(1, -35, 0.5),
-		AnchorPoint = Vector2.new(1, 0.5), BackgroundTransparency = 1,
-		Image = "rbxassetid://10734886496", AutoButtonColor = false, Name = "Resize"
-	})
 	local CloseButton = Create("ImageButton", {
 		Size = UDim2.new(0, 14, 0, 14), Position = UDim2.new(1, -10, 0.5),
 		AnchorPoint = Vector2.new(1, 0.5), BackgroundTransparency = 1,
 		Image = "rbxassetid://10747384394", AutoButtonColor = false, Name = "Close"
 	})
-	SetChildren(ButtonsFolder, {ResizeButton, CloseButton})
+	SetChildren(ButtonsFolder, {CloseButton})
 	local Minimized, SaveSize, WaitClick
 	local Window, FirstTab = {}, false
 	function Window:CloseBtn()
@@ -2221,17 +2218,15 @@ function kynx:MakeWindow(Configs)
 			Options = {{"Confirm", function() ScreenGui:Destroy() end}, {"Cancel"}}
 		})
 	end
-	function Window:ResizeBtn()
+	function Window:MinimizeBtn()
 		if WaitClick then return end
 		WaitClick = true
 		if Minimized then
-			ResizeButton.Image = "rbxassetid://10734886496"
 			CreateTween({MainFrame, "Size", SaveSize, 0.25, true})
 			ControlSize1.Visible = true
 			ControlSize2.Visible = true
 			Minimized = false
 		else
-			ResizeButton.Image = "rbxassetid://10734895698"
 			SaveSize = MainFrame.Size
 			ControlSize1.Visible = false
 			ControlSize2.Visible = false
@@ -2260,7 +2255,7 @@ function kynx:MakeWindow(Configs)
 	end
 	function Window:Dialog(Configs)
 		if MainFrame:FindFirstChild("Dialog") then return end
-		if Minimized then Window:ResizeBtn() end
+		if Minimized then Window:MinimizeBtn() end
 		local DTitle = Configs[1] or Configs.Title or "Dialog"
 		local DText = Configs[2] or Configs.Text or "This is a Dialog"
 		local DOptions = Configs[3] or Configs.Options or {}
@@ -2950,7 +2945,6 @@ function kynx:MakeWindow(Configs)
 		end
 		return Tab
 	end
-	ResizeButton.Activated:Connect(Window.ResizeBtn)
 	CloseButton.Activated:Connect(Window.CloseBtn)
 	return Window
 end
