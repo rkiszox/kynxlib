@@ -17,7 +17,7 @@ local kynx = {
 				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))
 			}),
 			["Color Hub 2"] = Color3.fromRGB(255, 255, 255),
-			["Color Stroke"] = Color3.fromRGB(255, 255, 255),
+			["Color Stroke"] = Color3.fromRGB(200, 200, 200),
 			["Color Theme"] = Color3.fromRGB(0, 0, 0),
 			["Color Text"] = Color3.fromRGB(0, 0, 0),
 			["Color Dark Text"] = Color3.fromRGB(80, 80, 80)
@@ -1748,7 +1748,7 @@ local kynx = {
 	["zodiac-scorpio"] = "rbxassetid://113640924054631",
 	["zodiac-taurus"] = "rbxassetid://123053219704400",
 	["zodiac-virgo"] = "rbxassetid://99462994613661"
-   }
+}
 }
 
 local ViewportSize = workspace.CurrentCamera.ViewportSize
@@ -2035,7 +2035,7 @@ local function ButtonFrame(Instance, Title, Description, HolderSize)
 	}), "DarkText")
 	local Frame = Make("Button", Instance, {Size = UDim2.new(1, 0, 0, 28), AutomaticSize = "Y", Name = "Option"})
 	Make("Corner", Frame, UDim.new(0, 10))
-	Make("Stroke", Frame, Theme["Color Stroke"], 0.5)
+	local FrameStroke = Make("Stroke", Frame, Theme["Color Stroke"], 0.5)
 	LabelHolder = Create("Frame", Frame, {
 		AutomaticSize = "Y",
 		BackgroundTransparency = 1,
@@ -2141,7 +2141,7 @@ function kynx:MakeWindow(Configs)
 		Name = "Hub"
 	}), "Main")
 	Make("Gradient", MainFrame, {Rotation = 45})MakeDrag(MainFrame)
-	Make("Stroke", MainFrame, Theme["Color Stroke"], 0.5)
+	local MainStroke = Make("Stroke", MainFrame, Theme["Color Stroke"], 0.5)
 	local MainCorner = Make("Corner", MainFrame, UDim.new(0, 16))
 	local Components = Create("Folder", MainFrame, {Name = "Components"})
 	local DropdownHolder = Create("Folder", ScreenGui, {Name = "Dropdown"})
@@ -2287,7 +2287,8 @@ function kynx:MakeWindow(Configs)
 				Position = UDim2.fromOffset(15, 25), BackgroundTransparency = 1,
 				TextWrapped = true
 			}), "DarkText")
-		})Make("Gradient", Frame, {Rotation = 270})Make("Corner", Frame, UDim.new(0, 12))Make("Stroke", Frame, Theme["Color Stroke"], 0.5)
+		})Make("Gradient", Frame, {Rotation = 270})Make("Corner", Frame, UDim.new(0, 12))
+		local FrameStroke2 = Make("Stroke", Frame, Theme["Color Stroke"], 0.5)
 		local ButtonsHolder = Create("Frame", Frame, {
 			Size = UDim2.fromScale(1, 0.35), Position = UDim2.fromScale(0, 1),
 			AnchorPoint = Vector2.new(0, 1), BackgroundColor3 = Theme["Color Hub 2"],
@@ -2312,7 +2313,7 @@ function kynx:MakeWindow(Configs)
 			ButtonCount = ButtonCount + 1
 			local Button = Make("Button", ButtonsHolder)
 			Make("Corner", Button, UDim.new(0, 8))
-			Make("Stroke", Button, Theme["Color Stroke"], 0.5)
+			local ButtonStroke = Make("Stroke", Button, Theme["Color Stroke"], 0.5)
 			SetProps(Button, {Text = Name, Font = Enum.Font.GothamBold, TextColor3 = Theme["Color Text"], TextSize = 12})
 			for _,Button in pairs(ButtonsHolder:GetChildren()) do
 				if Button:IsA("TextButton") then
@@ -2554,7 +2555,8 @@ function kynx:MakeWindow(Configs)
 				Size = UDim2.new(SelectedFrame.Size.X, 0, 0), BackgroundTransparency = 0.1,
 				BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0, 1),
 				Name = "DropdownFrame", ClipsDescendants = true, Active = true
-			})Make("Corner", DropFrame, UDim.new(0, 8))Make("Stroke", DropFrame, Theme["Color Stroke"], 0.5)Make("Gradient", DropFrame, {Rotation = 60})
+			})Make("Corner", DropFrame, UDim.new(0, 8))
+			local DropStroke = Make("Stroke", DropFrame, Theme["Color Stroke"], 0.5)Make("Gradient", DropFrame, {Rotation = 60})
 			local ScrollFrame = InsertTheme(Create("ScrollingFrame", DropFrame, {
 				ScrollBarImageColor3 = Theme["Color Theme"], Size = UDim2.new(1, 0, 1, 0),
 				ScrollBarThickness = 0.8, BackgroundTransparency = 1, BorderSizePixel = 0,
@@ -2903,11 +2905,13 @@ function kynx:MakeWindow(Configs)
 			local FrameHolder = InsertTheme(Create("Frame", InviteHolder, {
 				Size = UDim2.new(1, 0, 0, 65), AnchorPoint = Vector2.new(0, 1),
 				Position = UDim2.new(0, 0, 1), BackgroundColor3 = Theme["Color Hub 2"]
-			}), "Frame")Make("Corner", FrameHolder, UDim.new(0, 10))Make("Stroke", FrameHolder, Theme["Color Stroke"], 0.5)
+			}), "Frame")Make("Corner", FrameHolder, UDim.new(0, 10))
+			local FrameStroke3 = Make("Stroke", FrameHolder, Theme["Color Stroke"], 0.5)
 			local ImageLabel = Create("ImageLabel", FrameHolder, {
 				Size = UDim2.new(0, 30, 0, 30), Position = UDim2.new(0, 7, 0, 7),
 				Image = Logo, BackgroundTransparency = 1
-			})Make("Corner", ImageLabel, UDim.new(0, 8))Make("Stroke", ImageLabel, Theme["Color Stroke"], 0.5)
+			})Make("Corner", ImageLabel, UDim.new(0, 8))
+			local ImageStroke = Make("Stroke", ImageLabel, Theme["Color Stroke"], 0.5)
 			local LTitle = InsertTheme(Create("TextLabel", FrameHolder, {
 				Size = UDim2.new(1, -52, 0, 15), Position = UDim2.new(0, 44, 0, 7),
 				Font = Enum.Font.GothamBold, TextColor3 = Theme["Color Text"],
