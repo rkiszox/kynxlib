@@ -10,7 +10,7 @@ local PlayerMouse = Player:GetMouse()
 
 local kynx = {
 	Themes = {
-		Light = {
+		kynx = {
 			["Color Hub 1"] = ColorSequence.new({
 				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
 				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(255, 255, 255)),
@@ -24,7 +24,7 @@ local kynx = {
 		}
 	},
 	Info = {Version = "1.0.0"},
-	Save = {UISize = {550, 380}, TabSize = 160, Theme = "Light"},
+	Save = {UISize = {550, 380}, TabSize = 160, Theme = "kynx"},
 	Settings = {},
 	Connection = {},
 	Instances = {},
@@ -1748,7 +1748,7 @@ local kynx = {
 	["zodiac-scorpio"] = "rbxassetid://113640924054631",
 	["zodiac-taurus"] = "rbxassetid://123053219704400",
 	["zodiac-virgo"] = "rbxassetid://99462994613661"
-}
+     }
 }
 
 local ViewportSize = workspace.CurrentCamera.ViewportSize
@@ -1971,7 +1971,7 @@ local function Make(Ele, Instance, props, ...)
 end
 
 AddEle("Corner", function(parent, CornerRadius)
-	local New = SetProps(Create("UICorner", parent, {CornerRadius = CornerRadius or UDim.new(0, 7)}), props)
+	local New = SetProps(Create("UICorner", parent, {CornerRadius = CornerRadius or UDim.new(0, 10)}), props)
 	return New
 end)
 
@@ -2015,7 +2015,7 @@ local function ButtonFrame(Instance, Title, Description, HolderSize)
 		AnchorPoint = Vector2.new(0, 0.5),
 		BackgroundTransparency = 1,
 		TextTruncate = "AtEnd",
-		TextSize = 10,
+		TextSize = 12,
 		TextXAlignment = "Left",
 		Text = "",
 		RichText = true
@@ -2025,16 +2025,16 @@ local function ButtonFrame(Instance, Title, Description, HolderSize)
 		TextColor3 = Theme["Color Dark Text"],
 		Size = UDim2.new(1, -20),
 		AutomaticSize = "Y",
-		Position = UDim2.new(0, 12, 0, 15),
+		Position = UDim2.new(0, 12, 0, 18),
 		BackgroundTransparency = 1,
 		TextWrapped = true,
-		TextSize = 8,
+		TextSize = 10,
 		TextXAlignment = "Left",
 		Text = "",
 		RichText = true
 	}), "DarkText")
-	local Frame = Make("Button", Instance, {Size = UDim2.new(1, 0, 0, 25), AutomaticSize = "Y", Name = "Option"})
-	Make("Corner", Frame, UDim.new(0, 8))
+	local Frame = Make("Button", Instance, {Size = UDim2.new(1, 0, 0, 28), AutomaticSize = "Y", Name = "Option"})
+	Make("Corner", Frame, UDim.new(0, 10))
 	LabelHolder = Create("Frame", Frame, {
 		AutomaticSize = "Y",
 		BackgroundTransparency = 1,
@@ -2043,7 +2043,7 @@ local function ButtonFrame(Instance, Title, Description, HolderSize)
 		AnchorPoint = Vector2.new(0, 0)
 	}, {
 		Create("UIListLayout", {SortOrder = "LayoutOrder", VerticalAlignment = "Center", Padding = UDim.new(0, 2)}),
-		Create("UIPadding", {PaddingBottom = UDim.new(0, 5), PaddingTop = UDim.new(0, 5)}),
+		Create("UIPadding", {PaddingBottom = UDim.new(0, 6), PaddingTop = UDim.new(0, 6)}),
 		TitleL,
 		DescL,
 	})
@@ -2115,7 +2115,10 @@ end
 function kynx:MakeWindow(Configs)
 	local WTitle = Configs[1] or Configs.Name or Configs.Title or "kynx"
 	local WMiniText = Configs[2] or Configs.SubTitle or ""
-	Settings.ScriptFile = Configs[3] or Configs.SaveFolder or false
+	local WIcon = Configs[3] or Configs.Icon or ""
+	WIcon = kynx:GetIcon(WIcon)
+	if not WIcon:find("rbxassetid://") or WIcon:gsub("rbxassetid://", ""):len() < 6 then WIcon = false end
+	Settings.ScriptFile = Configs[4] or Configs.SaveFolder or false
 	local function LoadFile()
 		local File = Settings.ScriptFile
 		if type(File) ~= "string" then return end
@@ -2137,21 +2140,29 @@ function kynx:MakeWindow(Configs)
 		Name = "Hub"
 	}), "Main")
 	Make("Gradient", MainFrame, {Rotation = 45})MakeDrag(MainFrame)
-	local MainCorner = Make("Corner", MainFrame, UDim.new(0, 14))
+	local MainCorner = Make("Corner", MainFrame, UDim.new(0, 16))
 	local Components = Create("Folder", MainFrame, {Name = "Components"})
 	local DropdownHolder = Create("Folder", ScreenGui, {Name = "Dropdown"})
-	local TopBar = Create("Frame", Components, {Size = UDim2.new(1, 0, 0, 44), BackgroundTransparency = 1, Name = "Top Bar"})
+	local TopBar = Create("Frame", Components, {Size = UDim2.new(1, 0, 0, 52), BackgroundTransparency = 1, Name = "Top Bar"})
 	local TitleHolder = Create("Frame", TopBar, {Size = UDim2.new(1, -30, 1, 0), BackgroundTransparency = 1, Position = UDim2.new(0, 15, 0), Name = "TitleHolder"})
+	local TitleIcon
+	if WIcon then
+		TitleIcon = InsertTheme(Create("ImageLabel", TitleHolder, {
+			Size = UDim2.new(0, 18, 0, 18), Position = UDim2.new(0, 0, 0.5),
+			AnchorPoint = Vector2.new(0, 0.5), Image = WIcon,
+			BackgroundTransparency = 1
+		}), "Text")
+	end
 	local Title = InsertTheme(Create("TextLabel", TitleHolder, {
-		Position = UDim2.new(0, 0, 0, 2), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
-		Text = WTitle, TextXAlignment = "Left", TextSize = 14,
+		Position = UDim2.new(WIcon and 24 or 0, 0, 0, 2), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
+		Text = WTitle, TextXAlignment = "Left", TextSize = 16,
 		TextColor3 = Theme["Color Text"], BackgroundTransparency = 1,
 		Font = Enum.Font.GothamMedium, Name = "Title"
 	}), "Text")
 	local SubTitle = InsertTheme(Create("TextLabel", TitleHolder, {
-		Position = UDim2.new(0, 0, 0, 15), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
+		Position = UDim2.new(WIcon and 24 or 0, 0, 0, 20), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
 		Text = WMiniText, TextColor3 = Theme["Color Dark Text"], BackgroundTransparency = 1,
-		TextXAlignment = "Left", TextSize = 8, Font = Enum.Font.Gotham, Name = "SubTitle"
+		TextXAlignment = "Left", TextSize = 10, Font = Enum.Font.Gotham, Name = "SubTitle"
 	}), "DarkText")
 	local MainScroll = InsertTheme(Create("ScrollingFrame", Components, {
 		Size = UDim2.new(0, kynx.Save.TabSize, 1, -TopBar.Size.Y.Offset),
@@ -2164,19 +2175,18 @@ function kynx:MakeWindow(Configs)
 		BorderSizePixel = 0, Name = "Tab Scroll"
 	}, {
 		Create("UIPadding", {PaddingLeft = UDim.new(0, 10), PaddingRight = UDim.new(0, 10), PaddingTop = UDim.new(0, 10), PaddingBottom = UDim.new(0, 10)}),
-		Create("UIListLayout", {Padding = UDim.new(0, 5)})
+		Create("UIListLayout", {Padding = UDim.new(0, 6)})
 	}), "ScrollBar")
 	local Containers = Create("Frame", Components, {
 		Size = UDim2.new(1, -MainScroll.Size.X.Offset, 1, -TopBar.Size.Y.Offset),
 		AnchorPoint = Vector2.new(1, 1), Position = UDim2.new(1, 0, 1, 0),
 		BackgroundTransparency = 1, ClipsDescendants = true, Name = "Containers"
 	})
-	local ControlSize1 = MakeDrag(Create("ImageButton", MainFrame, {
+	local ControlSize1, ControlSize2 = MakeDrag(Create("ImageButton", MainFrame, {
 		Size = UDim2.new(0, 35, 0, 35), Position = MainFrame.Size,
 		Active = true, AnchorPoint = Vector2.new(0.8, 0.8),
 		BackgroundTransparency = 1, Name = "Control Hub Size"
-	}))
-	local ControlSize2 = MakeDrag(Create("ImageButton", MainFrame, {
+	})), MakeDrag(Create("ImageButton", MainFrame, {
 		Size = UDim2.new(0, 20, 1, -30),
 		Position = UDim2.new(0, MainScroll.Size.X.Offset, 1, 0),
 		AnchorPoint = Vector2.new(0.5, 1), Active = true,
@@ -2204,7 +2214,7 @@ function kynx:MakeWindow(Configs)
 	end)
 	local ButtonsFolder = Create("Folder", TopBar, {Name = "Buttons"})
 	local CloseButton = Create("ImageButton", {
-		Size = UDim2.new(0, 14, 0, 14), Position = UDim2.new(1, -10, 0.5),
+		Size = UDim2.new(0, 16, 0, 16), Position = UDim2.new(1, -8, 0.5),
 		AnchorPoint = Vector2.new(1, 0.5), BackgroundTransparency = 1,
 		Image = "rbxassetid://10747384394", AutoButtonColor = false, Name = "Close"
 	})
@@ -2275,7 +2285,7 @@ function kynx:MakeWindow(Configs)
 				Position = UDim2.fromOffset(15, 25), BackgroundTransparency = 1,
 				TextWrapped = true
 			}), "DarkText")
-		})Make("Gradient", Frame, {Rotation = 270})Make("Corner", Frame, UDim.new(0, 10))
+		})Make("Gradient", Frame, {Rotation = 270})Make("Corner", Frame, UDim.new(0, 12))
 		local ButtonsHolder = Create("Frame", Frame, {
 			Size = UDim2.fromScale(1, 0.35), Position = UDim2.fromScale(0, 1),
 			AnchorPoint = Vector2.new(0, 1), BackgroundColor3 = Theme["Color Hub 2"],
@@ -2299,7 +2309,7 @@ function kynx:MakeWindow(Configs)
 			local Callback = Configs[2] or Configs.Callback or function()end
 			ButtonCount = ButtonCount + 1
 			local Button = Make("Button", ButtonsHolder)
-			Make("Corner", Button, UDim.new(0, 6))
+			Make("Corner", Button, UDim.new(0, 8))
 			SetProps(Button, {Text = Name, Font = Enum.Font.GothamBold, TextColor3 = Theme["Color Text"], TextSize = 12})
 			for _,Button in pairs(ButtonsHolder:GetChildren()) do
 				if Button:IsA("TextButton") then
@@ -2356,7 +2366,7 @@ function kynx:MakeWindow(Configs)
 			Name = ("Container %i [ %s ]"):format(#ContainerList + 1, TName)
 		}, {
 			Create("UIPadding", {PaddingLeft = UDim.new(0, 10), PaddingRight = UDim.new(0, 10), PaddingTop = UDim.new(0, 10), PaddingBottom = UDim.new(0, 10)}),
-			Create("UIListLayout", {Padding = UDim.new(0, 5)})
+			Create("UIListLayout", {Padding = UDim.new(0, 6)})
 		}), "ScrollBar")
 		table.insert(ContainerList, Container)
 		if not FirstTab then Container.Parent = Containers end
@@ -2394,7 +2404,7 @@ function kynx:MakeWindow(Configs)
 			local SectionIcon = Configs[2] or Configs.Icon or ""
 			SectionIcon = kynx:GetIcon(SectionIcon)
 			if not SectionIcon:find("rbxassetid://") or SectionIcon:gsub("rbxassetid://", ""):len() < 6 then SectionIcon = false end
-			local SectionFrame = Create("Frame", Container, {Size = UDim2.new(1, 0, 0, 22), BackgroundTransparency = 1, Name = "Option"})
+			local SectionFrame = Create("Frame", Container, {Size = UDim2.new(1, 0, 0, 24), BackgroundTransparency = 1, Name = "Option"})
 			local SectionIconLabel
 			if SectionIcon then
 				SectionIconLabel = InsertTheme(Create("ImageLabel", SectionFrame, {
@@ -2466,7 +2476,7 @@ function kynx:MakeWindow(Configs)
 			if CheckFlag(Flag) then Default = GetFlag(Flag) end
 			local Button, LabelFunc = ButtonFrame(Container, TName, TDesc, UDim2.new(1, -42))
 			local ToggleHolder = InsertTheme(Create("Frame", Button, {
-				Size = UDim2.new(0, 36, 0, 18), Position = UDim2.new(1, -10, 0.5),
+				Size = UDim2.new(0, 38, 0, 20), Position = UDim2.new(1, -10, 0.5),
 				AnchorPoint = Vector2.new(1, 0.5), BackgroundColor3 = Theme["Color Stroke"]
 			}), "Stroke")Make("Corner", ToggleHolder, UDim.new(0.5, 0))
 			local Slider = Create("Frame", ToggleHolder, {
@@ -2474,14 +2484,9 @@ function kynx:MakeWindow(Configs)
 				Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5)
 			})
 			local Toggle = InsertTheme(Create("Frame", Slider, {
-				Size = UDim2.new(0, 12, 0, 12), Position = UDim2.new(0, 0, 0.5),
+				Size = UDim2.new(0, 14, 0, 14), Position = UDim2.new(0, 0, 0.5),
 				AnchorPoint = Vector2.new(0, 0.5), BackgroundColor3 = Theme["Color Theme"]
 			}), "Theme")Make("Corner", Toggle, UDim.new(0.5, 0))
-			local ToggleGlow = InsertTheme(Create("Frame", Toggle, {
-				Size = UDim2.new(2, 0, 2, 0), Position = UDim2.new(0.5, 0, 0.5, 0),
-				AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = Theme["Color Theme"],
-				BackgroundTransparency = 0.6
-			}), "Theme")Make("Corner", ToggleGlow, UDim.new(0.5, 0))
 			local WaitClick
 			local function SetToggle(Val)
 				if WaitClick then return end
@@ -2491,13 +2496,11 @@ function kynx:MakeWindow(Configs)
 				if Default then
 					CreateTween({Toggle, "Position", UDim2.new(1, 0, 0.5), 0.25})
 					CreateTween({Toggle, "BackgroundTransparency", 0, 0.25})
-					CreateTween({Toggle, "AnchorPoint", Vector2.new(1, 0.5), 0.25, Wait or false})
-					CreateTween({ToggleGlow, "BackgroundTransparency", 0.3, 0.25})
+					CreateTween({Toggle, "AnchorPoint", Vector2.new(1, 0.5), 0.25})
 				else
 					CreateTween({Toggle, "Position", UDim2.new(0, 0, 0.5), 0.25})
 					CreateTween({Toggle, "BackgroundTransparency", 0.8, 0.25})
-					CreateTween({Toggle, "AnchorPoint", Vector2.new(0, 0.5), 0.25, Wait or false})
-					CreateTween({ToggleGlow, "BackgroundTransparency", 0.6, 0.25})
+					CreateTween({Toggle, "AnchorPoint", Vector2.new(0, 0.5), 0.25})
 				end
 				WaitClick = false
 			end;task.spawn(SetToggle, Default)
@@ -2528,7 +2531,7 @@ function kynx:MakeWindow(Configs)
 			local SelectedFrame = InsertTheme(Create("Frame", Button, {
 				Size = UDim2.new(0, 150, 0, 18), Position = UDim2.new(1, -10, 0.5),
 				AnchorPoint = Vector2.new(1, 0.5), BackgroundColor3 = Theme["Color Stroke"]
-			}), "Stroke")Make("Corner", SelectedFrame, UDim.new(0, 4))
+			}), "Stroke")Make("Corner", SelectedFrame, UDim.new(0, 6))
 			local ActiveLabel = InsertTheme(Create("TextLabel", SelectedFrame, {
 				Size = UDim2.new(0.85, 0, 0.85, 0), AnchorPoint = Vector2.new(0.5, 0.5),
 				Position = UDim2.new(0.5, 0, 0.5, 0), BackgroundTransparency = 1,
@@ -2548,7 +2551,7 @@ function kynx:MakeWindow(Configs)
 				Size = UDim2.new(SelectedFrame.Size.X, 0, 0), BackgroundTransparency = 0.1,
 				BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0, 1),
 				Name = "DropdownFrame", ClipsDescendants = true, Active = true
-			})Make("Corner", DropFrame, UDim.new(0, 6))Make("Stroke", DropFrame)Make("Gradient", DropFrame, {Rotation = 60})
+			})Make("Corner", DropFrame, UDim.new(0, 8))Make("Stroke", DropFrame)Make("Gradient", DropFrame, {Rotation = 60})
 			local ScrollFrame = InsertTheme(Create("ScrollingFrame", DropFrame, {
 				ScrollBarImageColor3 = Theme["Color Theme"], Size = UDim2.new(1, 0, 1, 0),
 				ScrollBarThickness = 0.8, BackgroundTransparency = 1, BorderSizePixel = 0,
@@ -2676,7 +2679,7 @@ function kynx:MakeWindow(Configs)
 					local Button = Make("Button", ScrollFrame, {
 						Name = "Option", Size = UDim2.new(1, 0, 0, 21),
 						Position = UDim2.new(0, 0, 0.5), AnchorPoint = Vector2.new(0, 0.5)
-					})Make("Corner", Button, UDim.new(0, 4))
+					})Make("Corner", Button, UDim.new(0, 6))
 					local IsSelected = InsertTheme(Create("Frame", Button, {
 						Position = UDim2.new(0, 1, 0.5), Size = UDim2.new(0, 4, 0, 4),
 						BackgroundColor3 = Theme["Color Theme"], BackgroundTransparency = 1,
@@ -2774,15 +2777,10 @@ function kynx:MakeWindow(Configs)
 				BorderSizePixel = 0
 			}), "Theme")Make("Corner", Indicator, UDim.new(0, 4))
 			local SliderIcon = Create("Frame", SliderBar, {
-				Size = UDim2.new(0, 12, 0, 12), BackgroundColor3 = Theme["Color Theme"],
+				Size = UDim2.new(0, 14, 0, 14), BackgroundColor3 = Theme["Color Theme"],
 				Position = UDim2.fromScale(0.3, 0.5), AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 0
 			})Make("Corner", SliderIcon, UDim.new(0.5, 0))
-			local Glow = InsertTheme(Create("Frame", SliderIcon, {
-				Size = UDim2.new(2, 0, 2, 0), Position = UDim2.new(0.5, 0, 0.5, 0),
-				AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = Theme["Color Theme"],
-				BackgroundTransparency = 0.5
-			}), "Theme")Make("Corner", Glow, UDim.new(0.5, 0))
 			local LabelVal = InsertTheme(Create("TextLabel", SliderHolder, {
 				Size = UDim2.new(0, 14, 0, 14), AnchorPoint = Vector2.new(1, 0.5),
 				Position = UDim2.new(0, 0, 0.5), BackgroundTransparency = 1,
@@ -2811,13 +2809,11 @@ function kynx:MakeWindow(Configs)
 			end
 			SliderHolder.MouseButton1Down:Connect(function()
 				CreateTween({SliderIcon, "Transparency", 0, 0.3})
-				CreateTween({Glow, "BackgroundTransparency", 0.2, 0.3})
 				Container.ScrollingEnabled = false
 				while UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do task.wait()
 					ControlPos()
 				end
 				CreateTween({SliderIcon, "Transparency", 0, 0.3})
-				CreateTween({Glow, "BackgroundTransparency", 0.5, 0.3})
 				Container.ScrollingEnabled = true
 				SetFlag(Flag, Default)
 			end)
@@ -2860,7 +2856,7 @@ function kynx:MakeWindow(Configs)
 			local SelectedFrame = InsertTheme(Create("Frame", Button, {
 				Size = UDim2.new(0, 150, 0, 18), Position = UDim2.new(1, -10, 0.5),
 				AnchorPoint = Vector2.new(1, 0.5), BackgroundColor3 = Theme["Color Stroke"]
-			}), "Stroke")Make("Corner", SelectedFrame, UDim.new(0, 4))
+			}), "Stroke")Make("Corner", SelectedFrame, UDim.new(0, 6))
 			local TextBoxInput = InsertTheme(Create("TextBox", SelectedFrame, {
 				Size = UDim2.new(0.85, 0, 0.85, 0), AnchorPoint = Vector2.new(0.5, 0.5),
 				Position = UDim2.new(0.5, 0, 0.5, 0), BackgroundTransparency = 1,
@@ -2904,11 +2900,11 @@ function kynx:MakeWindow(Configs)
 			local FrameHolder = InsertTheme(Create("Frame", InviteHolder, {
 				Size = UDim2.new(1, 0, 0, 65), AnchorPoint = Vector2.new(0, 1),
 				Position = UDim2.new(0, 0, 1), BackgroundColor3 = Theme["Color Hub 2"]
-			}), "Frame")Make("Corner", FrameHolder, UDim.new(0, 8))
+			}), "Frame")Make("Corner", FrameHolder, UDim.new(0, 10))
 			local ImageLabel = Create("ImageLabel", FrameHolder, {
 				Size = UDim2.new(0, 30, 0, 30), Position = UDim2.new(0, 7, 0, 7),
 				Image = Logo, BackgroundTransparency = 1
-			})Make("Corner", ImageLabel, UDim.new(0, 6))Make("Stroke", ImageLabel)
+			})Make("Corner", ImageLabel, UDim.new(0, 8))Make("Stroke", ImageLabel)
 			local LTitle = InsertTheme(Create("TextLabel", FrameHolder, {
 				Size = UDim2.new(1, -52, 0, 15), Position = UDim2.new(0, 44, 0, 7),
 				Font = Enum.Font.GothamBold, TextColor3 = Theme["Color Text"],
@@ -2927,7 +2923,7 @@ function kynx:MakeWindow(Configs)
 				Font = Enum.Font.GothamBold, TextSize = 12,
 				TextColor3 = Color3.fromRGB(220, 220, 220),
 				BackgroundColor3 = Color3.fromRGB(50, 150, 50)
-			})Make("Corner", JoinButton, UDim.new(0, 5))
+			})Make("Corner", JoinButton, UDim.new(0, 8))
 			local ClickDelay
 			JoinButton.Activated:Connect(function()
 				setclipboard(Invite)
