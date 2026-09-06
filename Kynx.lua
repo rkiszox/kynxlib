@@ -17,10 +17,10 @@ local kynx = {
 				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))
 			}),
 			["Color Hub 2"] = Color3.fromRGB(255, 255, 255),
-			["Color Stroke"] = Color3.fromRGB(255, 255, 255),
+			["Color Stroke"] = Color3.fromRGB(200, 200, 200),
 			["Color Theme"] = Color3.fromRGB(0, 0, 0),
 			["Color Text"] = Color3.fromRGB(0, 0, 0),
-			["Color Dark Text"] = Color3.fromRGB(80, 80, 80)
+			["Color Dark Text"] = Color3.fromRGB(100, 100, 100)
 		}
 	},
 	Info = {Version = "1.0.0"},
@@ -40,29 +40,7 @@ local kynx = {
 		["list"] = "rbxassetid://10723433811",
 		["edit"] = "rbxassetid://10734883598",
 		["gauge"] = "rbxassetid://10723395708",
-		["palette"] = "rbxassetid://10734910430",
-		["user"] = "rbxassetid://10747373176",
-		["users"] = "rbxassetid://10747373426",
-		["search"] = "rbxassetid://10734943674",
-		["plus"] = "rbxassetid://10734924532",
-		["minus"] = "rbxassetid://10734896206",
-		["x"] = "rbxassetid://10747384394",
-		["check"] = "rbxassetid://10709790644",
-		["lock"] = "rbxassetid://10723434711",
-		["unlock"] = "rbxassetid://10747366027",
-		["star"] = "rbxassetid://10734966248",
-		["heart"] = "rbxassetid://10723406885",
-		["flag"] = "rbxassetid://10723375890",
-		["bookmark"] = "rbxassetid://10709782154",
-		["cog"] = "rbxassetid://116544501716299",
-		["download"] = "rbxassetid://134814648082393",
-		["upload"] = "rbxassetid://10747366434",
-		["folder"] = "rbxassetid://10723387563",
-		["file"] = "rbxassetid://10723374641",
-		["image"] = "rbxassetid://10723415040",
-		["video"] = "rbxassetid://10747374938",
-		["music"] = "rbxassetid://10734905958",
-		["camera"] = "rbxassetid://10709789686"
+		["palette"] = "rbxassetid://10734910430"
 	}
 }
 
@@ -129,12 +107,8 @@ local Funcs = {} do
 		end
 	end
 	function Funcs:ToggleVisible(Obj, Bool) Obj.Visible = Bool ~= nil and Bool or Obj.Visible end
-	function Funcs:ToggleParent(Obj, Parent, Container)
-		if Parent ~= nil then 
-			Obj.Parent = Parent and Container or nil
-		else 
-			Obj.Parent = Obj.Parent and nil or Container
-		end
+	function Funcs:ToggleParent(Obj, Parent)
+		if Bool ~= nil then Obj.Parent = Bool else Obj.Parent = not Obj.Parent and Parent end
 	end
 	function Funcs:GetConnectionFunctions(ConnectedFuncs, func)
 		local Connected = {Function = func, Connected = true}
@@ -285,23 +259,12 @@ local Theme = kynx.Themes[kynx.Save.Theme]
 
 local function AddEle(Name, Func) kynx.Elements[Name] = Func end
 local function Make(Ele, Instance, props, ...)
-	if not kynx.Elements[Ele] then return end
 	local Element = kynx.Elements[Ele](Instance, props, ...)
 	return Element
 end
 
-AddEle("Corner", function(parent, CornerRadius, props)
-	local New = SetProps(Create("UICorner", parent, {CornerRadius = CornerRadius or UDim.new(0, 10)}), props)
-	return New
-end)
-
-AddEle("Stroke", function(parent, props, ...)
-	local args = {...}
-	local New = InsertTheme(SetProps(Create("UIStroke", parent, {
-		Color = args[1] or Theme["Color Stroke"],
-		Thickness = args[2] or 1,
-		ApplyStrokeMode = "Border"
-	}), props), "Stroke")
+AddEle("Corner", function(parent, CornerRadius)
+	local New = SetProps(Create("UICorner", parent, {CornerRadius = CornerRadius or UDim.new(0, 7)}), props)
 	return New
 end)
 
@@ -324,22 +287,6 @@ AddEle("Gradient", function(parent, props, ...)
 	local New = InsertTheme(SetProps(Create("UIGradient", parent, {Color = Theme["Color Hub 1"]}), props), "Gradient")
 	return New
 end)
-
-local function GetColor(Instance)
-	if not Instance then return "BackgroundColor3" end
-	if Instance:IsA("Frame") then 
-		return "BackgroundColor3"
-	elseif Instance:IsA("ImageLabel") or Instance:IsA("ImageButton") then 
-		return "ImageColor3"
-	elseif Instance:IsA("TextLabel") or Instance:IsA("TextButton") or Instance:IsA("TextBox") then 
-		return "TextColor3"
-	elseif Instance:IsA("ScrollingFrame") then 
-		return "ScrollBarImageColor3"
-	elseif Instance:IsA("UIStroke") then 
-		return "Color"
-	end
-	return "BackgroundColor3"
-end
 
 local function ButtonFrame(Instance, Title, Description, HolderSize)
 	local TitleL = InsertTheme(Create("TextLabel", {
@@ -371,8 +318,7 @@ local function ButtonFrame(Instance, Title, Description, HolderSize)
 	}), "DarkText")
 	local Frame = Make("Button", Instance, {Size = UDim2.new(1, 0, 0, 28), AutomaticSize = "Y", Name = "Option"})
 	Make("Corner", Frame, UDim.new(0, 10))
-	Make("Stroke", Frame, Theme["Color Stroke"], 0.5)
-	local LabelHolder = Create("Frame", Frame, {
+	LabelHolder = Create("Frame", Frame, {
 		AutomaticSize = "Y",
 		BackgroundTransparency = 1,
 		Size = HolderSize,
@@ -406,6 +352,15 @@ local function ButtonFrame(Instance, Title, Description, HolderSize)
 	return Frame, Label
 end
 
+local function GetColor(Instance)
+	if Instance:IsA("Frame") then return "BackgroundColor3"
+	elseif Instance:IsA("ImageLabel") then return "ImageColor3"
+	elseif Instance:IsA("TextLabel") then return "TextColor3"
+	elseif Instance:IsA("ScrollingFrame") then return "ScrollBarImageColor3"
+	elseif Instance:IsA("UIStroke") then return "Color" end
+	return ""
+end
+
 function kynx:GetIcon(index)
 	if type(index) ~= "string" or index:find("rbxassetid://") or #index == 0 then return index end
 	local firstMatch = nil
@@ -424,58 +379,19 @@ function kynx:SetTheme(NewTheme)
 	SaveJson("kynx library.json", kynx.Save)
 	Theme = kynx.Themes[NewTheme]
 	Connection:FireConnection("ThemeChanged", NewTheme)
-	for _,Val in pairs(kynx.Instances) do
-		if Val.Instance then
-			if Val.Type == "Gradient" then 
-				Val.Instance.Color = Theme["Color Hub 1"]
-			elseif Val.Type == "Frame" then 
-				Val.Instance.BackgroundColor3 = Theme["Color Hub 2"]
-			elseif Val.Type == "Stroke" then 
-				local prop = GetColor(Val.Instance)
-				if prop == "Color" then
-					Val.Instance.Color = Theme["Color Stroke"]
-				else
-					Val.Instance[prop] = Theme["Color Stroke"]
-				end
-			elseif Val.Type == "Theme" then 
-				local prop = GetColor(Val.Instance)
-				if prop == "Color" then
-					Val.Instance.Color = Theme["Color Theme"]
-				else
-					Val.Instance[prop] = Theme["Color Theme"]
-				end
-			elseif Val.Type == "Text" then 
-				local prop = GetColor(Val.Instance)
-				if prop == "Color" then
-					Val.Instance.Color = Theme["Color Text"]
-				else
-					Val.Instance[prop] = Theme["Color Text"]
-				end
-			elseif Val.Type == "DarkText" then 
-				local prop = GetColor(Val.Instance)
-				if prop == "Color" then
-					Val.Instance.Color = Theme["Color Dark Text"]
-				else
-					Val.Instance[prop] = Theme["Color Dark Text"]
-				end
-			elseif Val.Type == "ScrollBar" then 
-				local prop = GetColor(Val.Instance)
-				if prop == "Color" then
-					Val.Instance.Color = Theme["Color Theme"]
-				else
-					Val.Instance[prop] = Theme["Color Theme"]
-				end
-			end
-		end
-	end
+	table.foreach(kynx.Instances, function(_,Val)
+		if Val.Type == "Gradient" then Val.Instance.Color = Theme["Color Hub 1"]
+		elseif Val.Type == "Frame" then Val.Instance.BackgroundColor3 = Theme["Color Hub 2"]
+		elseif Val.Type == "Theme" then Val.Instance[GetColor(Val.Instance)] = Theme["Color Theme"]
+		elseif Val.Type == "Text" then Val.Instance[GetColor(Val.Instance)] = Theme["Color Text"]
+		elseif Val.Type == "DarkText" then Val.Instance[GetColor(Val.Instance)] = Theme["Color Dark Text"]
+		elseif Val.Type == "ScrollBar" then Val.Instance[GetColor(Val.Instance)] = Theme["Color Theme"] end
+	end)
 end
 
 function kynx:SetScale(NewScale)
 	NewScale = ViewportSize.Y / math.clamp(NewScale, 300, 2000)
-	UIScale = NewScale
-	if ScreenGui and ScreenGui.Scale then
-		ScreenGui.Scale.Scale = NewScale
-	end
+	UIScale, ScreenGui.Scale.Scale = NewScale, NewScale
 end
 
 function kynx:MakeWindow(Configs)
@@ -494,13 +410,10 @@ function kynx:MakeWindow(Configs)
 			local s, _Flags = pcall(readfile, File)
 			if s and type(_Flags) == "string" then
 				local s,r = pcall(function() return HttpService:JSONDecode(_Flags) end)
-				if s and type(r) == "table" then
-					Flags = r
-				end
+				Flags = s and r or {}
 			end
 		end
-	end
-	LoadFile()
+	end;LoadFile()
 	local UISizeX, UISizeY = unpack(kynx.Save.UISize)
 	local MainFrame = InsertTheme(Create("ImageButton", ScreenGui, {
 		Size = UDim2.fromOffset(UISizeX, UISizeY),
@@ -508,17 +421,14 @@ function kynx:MakeWindow(Configs)
 		BackgroundTransparency = 0.03,
 		Name = "Hub"
 	}), "Main")
-	Make("Gradient", MainFrame, {Rotation = 45})
-	MakeDrag(MainFrame)
-	Make("Stroke", MainFrame, Theme["Color Stroke"], 0.5)
+	Make("Gradient", MainFrame, {Rotation = 45})MakeDrag(MainFrame)
 	local MainCorner = Make("Corner", MainFrame, UDim.new(0, 16))
 	local Components = Create("Folder", MainFrame, {Name = "Components"})
 	local DropdownHolder = Create("Folder", ScreenGui, {Name = "Dropdown"})
 	local TopBar = Create("Frame", Components, {Size = UDim2.new(1, 0, 0, 52), BackgroundTransparency = 1, Name = "Top Bar"})
 	local TitleHolder = Create("Frame", TopBar, {Size = UDim2.new(1, -30, 1, 0), BackgroundTransparency = 1, Position = UDim2.new(0, 15, 0), Name = "TitleHolder"})
-	local TitleIcon
 	if WIcon then
-		TitleIcon = InsertTheme(Create("ImageLabel", TitleHolder, {
+		local TitleIcon = InsertTheme(Create("ImageLabel", TitleHolder, {
 			Size = UDim2.new(0, 18, 0, 18), Position = UDim2.new(0, 0, 0.5),
 			AnchorPoint = Vector2.new(0, 0.5), Image = WIcon,
 			BackgroundTransparency = 1
@@ -563,7 +473,6 @@ function kynx:MakeWindow(Configs)
 		AnchorPoint = Vector2.new(0.5, 1), Active = true,
 		BackgroundTransparency = 1, Name = "Control Tab Size"
 	}))
-	local Minimized, SaveSize, WaitClick
 	local function ControlSize()
 		local Pos1, Pos2 = ControlSize1.Position, ControlSize2.Position
 		ControlSize1.Position = UDim2.fromOffset(math.clamp(Pos1.X.Offset, 430, 1000), math.clamp(Pos1.Y.Offset, 200, 500))
@@ -591,6 +500,7 @@ function kynx:MakeWindow(Configs)
 		Image = "rbxassetid://10747384394", AutoButtonColor = false, Name = "Close"
 	})
 	SetChildren(ButtonsFolder, {CloseButton})
+	local Minimized, SaveSize, WaitClick
 	local Window, FirstTab = {}, false
 	function Window:CloseBtn()
 		local Dialog = Window:Dialog({
@@ -623,12 +533,11 @@ function kynx:MakeWindow(Configs)
 			BackgroundTransparency = 1, BackgroundColor3 = Theme["Color Hub 2"],
 			AutoButtonColor = false
 		}))
-		local Stroke, Corner
+		local Corner
 		if Configs.Corner then Corner = Make("Corner", Button) SetProps(Corner, Configs.Corner) end
-		if Configs.Stroke then Stroke = Make("Stroke", Button) SetProps(Stroke, Configs.Corner) end
 		SetProps(Button, Configs.Button)
 		Button.Activated:Connect(Window.Minimize)
-		return {Stroke = Stroke, Corner = Corner, Button = Button}
+		return {Corner = Corner, Button = Button}
 	end
 	function Window:Set(Val1, Val2)
 		if type(Val1) == "string" and type(Val2) == "string" then Title.Text = Val1 SubTitle.Text = Val2
@@ -656,10 +565,7 @@ function kynx:MakeWindow(Configs)
 				Position = UDim2.fromOffset(15, 25), BackgroundTransparency = 1,
 				TextWrapped = true
 			}), "DarkText")
-		})
-		Make("Gradient", Frame, {Rotation = 270})
-		Make("Corner", Frame, UDim.new(0, 12))
-		Make("Stroke", Frame, Theme["Color Stroke"], 0.5)
+		})Make("Gradient", Frame, {Rotation = 270})Make("Corner", Frame, UDim.new(0, 12))
 		local ButtonsHolder = Create("Frame", Frame, {
 			Size = UDim2.fromScale(1, 0.35), Position = UDim2.fromScale(0, 1),
 			AnchorPoint = Vector2.new(0, 1), BackgroundColor3 = Theme["Color Hub 2"],
@@ -671,7 +577,7 @@ function kynx:MakeWindow(Configs)
 			BackgroundTransparency = 0.6, Active = true,
 			BackgroundColor3 = Theme["Color Hub 2"], Size = UDim2.new(1, 0, 1, 0),
 			Name = "Dialog"
-		}), "Stroke")
+		}), "Frame")
 		MainCorner:Clone().Parent = Screen
 		Frame.Parent = Screen
 		CreateTween({Frame, "Size", UDim2.fromOffset(250, 150), 0.2})
@@ -684,7 +590,6 @@ function kynx:MakeWindow(Configs)
 			ButtonCount = ButtonCount + 1
 			local Button = Make("Button", ButtonsHolder)
 			Make("Corner", Button, UDim.new(0, 8))
-			Make("Stroke", Button, Theme["Color Stroke"], 0.5)
 			SetProps(Button, {Text = Name, Font = Enum.Font.GothamBold, TextColor3 = Theme["Color Text"], TextSize = 12})
 			for _,Button in pairs(ButtonsHolder:GetChildren()) do
 				if Button:IsA("TextButton") then
@@ -714,8 +619,7 @@ function kynx:MakeWindow(Configs)
 		local TIcon = Configs[2] or Configs.Icon or ""
 		TIcon = kynx:GetIcon(TIcon)
 		if not TIcon:find("rbxassetid://") or TIcon:gsub("rbxassetid://", ""):len() < 6 then TIcon = false end
-		local TabSelect = Make("Button", MainScroll, {Size = UDim2.new(1, 0, 0, 24)})
-		Make("Corner", TabSelect, UDim.new(0, 6))
+		local TabSelect = Make("Button", MainScroll, {Size = UDim2.new(1, 0, 0, 24)})Make("Corner", TabSelect, UDim.new(0, 6))
 		local LabelTitle = InsertTheme(Create("TextLabel", TabSelect, {
 			Size = UDim2.new(1, TIcon and -25 or -15, 1), Position = UDim2.fromOffset(TIcon and 25 or 15),
 			BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = TName,
@@ -732,8 +636,7 @@ function kynx:MakeWindow(Configs)
 			Size = FirstTab and UDim2.new(0, 4, 0, 4) or UDim2.new(0, 4, 0, 13),
 			Position = UDim2.new(0, 1, 0.5), AnchorPoint = Vector2.new(0, 0.5),
 			BackgroundColor3 = Theme["Color Theme"], BackgroundTransparency = FirstTab and 1 or 0
-		}), "Theme")
-		Make("Corner", Selected, UDim.new(0.5, 0))
+		}), "Theme")Make("Corner", Selected, UDim.new(0.5, 0))
 		local Container = InsertTheme(Create("ScrollingFrame", {
 			Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 1),
 			AnchorPoint = Vector2.new(0, 1), ScrollBarThickness = 0.8,
@@ -782,9 +685,8 @@ function kynx:MakeWindow(Configs)
 			SectionIcon = kynx:GetIcon(SectionIcon)
 			if not SectionIcon:find("rbxassetid://") or SectionIcon:gsub("rbxassetid://", ""):len() < 6 then SectionIcon = false end
 			local SectionFrame = Create("Frame", Container, {Size = UDim2.new(1, 0, 0, 24), BackgroundTransparency = 1, Name = "Option"})
-			local SectionIconLabel
 			if SectionIcon then
-				SectionIconLabel = InsertTheme(Create("ImageLabel", SectionFrame, {
+				InsertTheme(Create("ImageLabel", SectionFrame, {
 					Size = UDim2.new(0, 14, 0, 14), Position = UDim2.new(0, 5, 0.5),
 					AnchorPoint = Vector2.new(0, 0.5), Image = SectionIcon,
 					BackgroundTransparency = 1
@@ -855,8 +757,7 @@ function kynx:MakeWindow(Configs)
 			local ToggleHolder = InsertTheme(Create("Frame", Button, {
 				Size = UDim2.new(0, 38, 0, 20), Position = UDim2.new(1, -10, 0.5),
 				AnchorPoint = Vector2.new(1, 0.5), BackgroundColor3 = Theme["Color Stroke"]
-			}), "Stroke")
-			Make("Corner", ToggleHolder, UDim.new(0.5, 0))
+			}), "Frame")Make("Corner", ToggleHolder, UDim.new(0.5, 0))
 			local Slider = Create("Frame", ToggleHolder, {
 				BackgroundTransparency = 1, Size = UDim2.new(0.8, 0, 0.8, 0),
 				Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5)
@@ -864,8 +765,7 @@ function kynx:MakeWindow(Configs)
 			local Toggle = InsertTheme(Create("Frame", Slider, {
 				Size = UDim2.new(0, 14, 0, 14), Position = UDim2.new(0, 0, 0.5),
 				AnchorPoint = Vector2.new(0, 0.5), BackgroundColor3 = Theme["Color Theme"]
-			}), "Theme")
-			Make("Corner", Toggle, UDim.new(0.5, 0))
+			}), "Theme")Make("Corner", Toggle, UDim.new(0.5, 0))
 			local WaitClick
 			local function SetToggle(Val)
 				if WaitClick then return end
@@ -882,8 +782,7 @@ function kynx:MakeWindow(Configs)
 					CreateTween({Toggle, "AnchorPoint", Vector2.new(0, 0.5), 0.25})
 				end
 				WaitClick = false
-			end
-			task.spawn(SetToggle, Default)
+			end;task.spawn(SetToggle, Default)
 			Button.Activated:Connect(function() SetToggle(not Default) end)
 			local Toggle = {}
 			function Toggle:Visible(...) Funcs:ToggleVisible(Button, ...) end
@@ -911,8 +810,7 @@ function kynx:MakeWindow(Configs)
 			local SelectedFrame = InsertTheme(Create("Frame", Button, {
 				Size = UDim2.new(0, 150, 0, 18), Position = UDim2.new(1, -10, 0.5),
 				AnchorPoint = Vector2.new(1, 0.5), BackgroundColor3 = Theme["Color Stroke"]
-			}), "Stroke")
-			Make("Corner", SelectedFrame, UDim.new(0, 6))
+			}), "Frame")Make("Corner", SelectedFrame, UDim.new(0, 6))
 			local ActiveLabel = InsertTheme(Create("TextLabel", SelectedFrame, {
 				Size = UDim2.new(0.85, 0, 0.85, 0), AnchorPoint = Vector2.new(0.5, 0.5),
 				Position = UDim2.new(0.5, 0, 0.5, 0), BackgroundTransparency = 1,
@@ -932,10 +830,7 @@ function kynx:MakeWindow(Configs)
 				Size = UDim2.new(SelectedFrame.Size.X, 0, 0), BackgroundTransparency = 0.1,
 				BackgroundColor3 = Color3.fromRGB(255, 255, 255), AnchorPoint = Vector2.new(0, 1),
 				Name = "DropdownFrame", ClipsDescendants = true, Active = true
-			})
-			Make("Corner", DropFrame, UDim.new(0, 8))
-			Make("Stroke", DropFrame, Theme["Color Stroke"], 0.5)
-			Make("Gradient", DropFrame, {Rotation = 60})
+			})Make("Corner", DropFrame, UDim.new(0, 8))Make("Gradient", DropFrame, {Rotation = 60})
 			local ScrollFrame = InsertTheme(Create("ScrollingFrame", DropFrame, {
 				ScrollBarImageColor3 = Theme["Color Theme"], Size = UDim2.new(1, 0, 1, 0),
 				ScrollBarThickness = 0.8, BackgroundTransparency = 1, BorderSizePixel = 0,
@@ -1063,14 +958,12 @@ function kynx:MakeWindow(Configs)
 					local Button = Make("Button", ScrollFrame, {
 						Name = "Option", Size = UDim2.new(1, 0, 0, 21),
 						Position = UDim2.new(0, 0, 0.5), AnchorPoint = Vector2.new(0, 0.5)
-					})
-					Make("Corner", Button, UDim.new(0, 6))
+					})Make("Corner", Button, UDim.new(0, 6))
 					local IsSelected = InsertTheme(Create("Frame", Button, {
 						Position = UDim2.new(0, 1, 0.5), Size = UDim2.new(0, 4, 0, 4),
 						BackgroundColor3 = Theme["Color Theme"], BackgroundTransparency = 1,
 						AnchorPoint = Vector2.new(0, 0.5)
-					}), "Theme")
-					Make("Corner", IsSelected, UDim.new(0.5, 0))
+					}), "Theme")Make("Corner", IsSelected, UDim.new(0.5, 0))
 					local OptioneName = InsertTheme(Create("TextLabel", Button, {
 						Size = UDim2.new(1, 0, 1), Position = UDim2.new(0, 10),
 						Text = Name, TextColor3 = Theme["Color Text"],
@@ -1157,19 +1050,16 @@ function kynx:MakeWindow(Configs)
 			local SliderBar = InsertTheme(Create("Frame", SliderHolder, {
 				BackgroundColor3 = Theme["Color Stroke"], Size = UDim2.new(1, -20, 0, 4),
 				Position = UDim2.new(0.5, 0, 0.5), AnchorPoint = Vector2.new(0.5, 0.5)
-			}), "Stroke")
-			Make("Corner", SliderBar, UDim.new(0, 4))
+			}), "Frame")Make("Corner", SliderBar, UDim.new(0, 4))
 			local Indicator = InsertTheme(Create("Frame", SliderBar, {
 				BackgroundColor3 = Theme["Color Theme"], Size = UDim2.fromScale(0.3, 1),
 				BorderSizePixel = 0
-			}), "Theme")
-			Make("Corner", Indicator, UDim.new(0, 4))
+			}), "Theme")Make("Corner", Indicator, UDim.new(0, 4))
 			local SliderIcon = Create("Frame", SliderBar, {
 				Size = UDim2.new(0, 14, 0, 14), BackgroundColor3 = Theme["Color Theme"],
 				Position = UDim2.fromScale(0.3, 0.5), AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 0
-			})
-			Make("Corner", SliderIcon, UDim.new(0.5, 0))
+			})Make("Corner", SliderIcon, UDim.new(0.5, 0))
 			local LabelVal = InsertTheme(Create("TextLabel", SliderHolder, {
 				Size = UDim2.new(0, 14, 0, 14), AnchorPoint = Vector2.new(1, 0.5),
 				Position = UDim2.new(0, 0, 0.5), BackgroundTransparency = 1,
@@ -1219,10 +1109,8 @@ function kynx:MakeWindow(Configs)
 				local SliderPos = (NewValue - Min) / (Max - Min)
 				SetFlag(Flag, NewValue)
 				CreateTween({SliderIcon, "Position", UDim2.fromScale(math.clamp(SliderPos, 0, 1), 0.5), 0.3, true})
-			end
-			SetSlider(Default)
-			SliderIcon:GetPropertyChangedSignal("Position"):Connect(UpdateValues)
-			UpdateValues()
+			end;SetSlider(Default)
+			SliderIcon:GetPropertyChangedSignal("Position"):Connect(UpdateValues)UpdateValues()
 			local Slider = {}
 			function Slider:Set(NewVal1, NewVal2)
 				if NewVal1 and NewVal2 then LabelFunc:SetTitle(NewVal1) LabelFunc:SetDesc(NewVal2)
@@ -1247,8 +1135,7 @@ function kynx:MakeWindow(Configs)
 			local SelectedFrame = InsertTheme(Create("Frame", Button, {
 				Size = UDim2.new(0, 150, 0, 18), Position = UDim2.new(1, -10, 0.5),
 				AnchorPoint = Vector2.new(1, 0.5), BackgroundColor3 = Theme["Color Stroke"]
-			}), "Stroke")
-			Make("Corner", SelectedFrame, UDim.new(0, 6))
+			}), "Frame")Make("Corner", SelectedFrame, UDim.new(0, 6))
 			local TextBoxInput = InsertTheme(Create("TextBox", SelectedFrame, {
 				Size = UDim2.new(0.85, 0, 0.85, 0), AnchorPoint = Vector2.new(0.5, 0.5),
 				Position = UDim2.new(0.5, 0, 0.5, 0), BackgroundTransparency = 1,
@@ -1269,8 +1156,7 @@ function kynx:MakeWindow(Configs)
 					TextBoxInput.Text = Text
 				end
 			end
-			TextBoxInput.FocusLost:Connect(Input)
-			Input()
+			TextBoxInput.FocusLost:Connect(Input)Input()
 			TextBoxInput.FocusLost:Connect(function() CreateTween({Pencil, "ImageColor3", Color3.fromRGB(255, 255, 255), 0.2}) end)
 			TextBoxInput.Focused:Connect(function() CreateTween({Pencil, "ImageColor3", Theme["Color Theme"], 0.2}) end)
 			TextBox.OnChanging = false
@@ -1293,15 +1179,11 @@ function kynx:MakeWindow(Configs)
 			local FrameHolder = InsertTheme(Create("Frame", InviteHolder, {
 				Size = UDim2.new(1, 0, 0, 65), AnchorPoint = Vector2.new(0, 1),
 				Position = UDim2.new(0, 0, 1), BackgroundColor3 = Theme["Color Hub 2"]
-			}), "Frame")
-			Make("Corner", FrameHolder, UDim.new(0, 10))
-			Make("Stroke", FrameHolder, Theme["Color Stroke"], 0.5)
+			}), "Frame")Make("Corner", FrameHolder, UDim.new(0, 10))
 			local ImageLabel = Create("ImageLabel", FrameHolder, {
 				Size = UDim2.new(0, 30, 0, 30), Position = UDim2.new(0, 7, 0, 7),
 				Image = Logo, BackgroundTransparency = 1
-			})
-			Make("Corner", ImageLabel, UDim.new(0, 8))
-			Make("Stroke", ImageLabel, Theme["Color Stroke"], 0.5)
+			})Make("Corner", ImageLabel, UDim.new(0, 8))
 			local LTitle = InsertTheme(Create("TextLabel", FrameHolder, {
 				Size = UDim2.new(1, -52, 0, 15), Position = UDim2.new(0, 44, 0, 7),
 				Font = Enum.Font.GothamBold, TextColor3 = Theme["Color Text"],
@@ -1320,8 +1202,7 @@ function kynx:MakeWindow(Configs)
 				Font = Enum.Font.GothamBold, TextSize = 12,
 				TextColor3 = Color3.fromRGB(220, 220, 220),
 				BackgroundColor3 = Color3.fromRGB(50, 150, 50)
-			})
-			Make("Corner", JoinButton, UDim.new(0, 8))
+			})Make("Corner", JoinButton, UDim.new(0, 8))
 			local ClickDelay
 			JoinButton.Activated:Connect(function()
 				setclipboard(Invite)
