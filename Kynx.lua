@@ -443,14 +443,14 @@ function kynx:MakeWindow(Configs)
 	end
 	local Title = InsertTheme(Create("TextLabel", TitleHolder, {
 		Position = UDim2.new(WIcon and 24 or 0, 0, 0, 0), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
-		Text = WTitle, TextXAlignment = "Left", TextSize = 18,
+		Text = WTitle, TextXAlignment = "Left", TextSize = 16,
 		TextColor3 = Theme["Color Text"], BackgroundTransparency = 1,
 		Font = Enum.Font.GothamBold, Name = "Title"
 	}), "Text")
 	local SubTitle = InsertTheme(Create("TextLabel", TitleHolder, {
-		Position = UDim2.new(WIcon and 24 or 0, 0, 0, 22), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
+		Position = UDim2.new(WIcon and 24 or 0, 0, 0, 20), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
 		Text = WMiniText, TextColor3 = Theme["Color Dark Text"], BackgroundTransparency = 1,
-		TextXAlignment = "Left", TextSize = 12, Font = Enum.Font.Gotham, Name = "SubTitle"
+		TextXAlignment = "Left", TextSize = 11, Font = Enum.Font.Gotham, Name = "SubTitle"
 	}), "DarkText")
 	local MainScroll = InsertTheme(Create("ScrollingFrame", Components, {
 		Size = UDim2.new(0, kynx.Save.TabSize, 1, -TopBar.Size.Y.Offset),
@@ -781,11 +781,13 @@ function kynx:MakeWindow(Configs)
 				Funcs:FireCallback(Callback, Default)
 				if Default then
 					CreateTween({Toggle, "Position", UDim2.new(1, 0, 0.5), 0.25})
+					CreateTween({Toggle, "BackgroundColor3", Color3.fromRGB(0, 0, 0), 0.25})
 					CreateTween({Toggle, "BackgroundTransparency", 0, 0.25})
 					CreateTween({Toggle, "AnchorPoint", Vector2.new(1, 0.5), 0.25})
 				else
 					CreateTween({Toggle, "Position", UDim2.new(0, 0, 0.5), 0.25})
-					CreateTween({Toggle, "BackgroundTransparency", 0.8, 0.25})
+					CreateTween({Toggle, "BackgroundColor3", Color3.fromRGB(100, 100, 100), 0.25})
+					CreateTween({Toggle, "BackgroundTransparency", 0.3, 0.25})
 					CreateTween({Toggle, "AnchorPoint", Vector2.new(0, 0.5), 0.25})
 				end
 				WaitClick = false
