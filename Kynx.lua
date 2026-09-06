@@ -1748,7 +1748,7 @@ local kynx = {
 	["zodiac-scorpio"] = "rbxassetid://113640924054631",
 	["zodiac-taurus"] = "rbxassetid://123053219704400",
 	["zodiac-virgo"] = "rbxassetid://99462994613661"
-     }
+}
 }
 
 local ViewportSize = workspace.CurrentCamera.ViewportSize
@@ -2154,13 +2154,13 @@ function kynx:MakeWindow(Configs)
 		}), "Text")
 	end
 	local Title = InsertTheme(Create("TextLabel", TitleHolder, {
-		Position = UDim2.new(WIcon and 24 or 0, 0, 0, 2), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
+		Position = UDim2.new(WIcon and 24 or 0, 0, 0, 0), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
 		Text = WTitle, TextXAlignment = "Left", TextSize = 16,
 		TextColor3 = Theme["Color Text"], BackgroundTransparency = 1,
 		Font = Enum.Font.GothamMedium, Name = "Title"
 	}), "Text")
 	local SubTitle = InsertTheme(Create("TextLabel", TitleHolder, {
-		Position = UDim2.new(WIcon and 24 or 0, 0, 0, 20), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
+		Position = UDim2.new(WIcon and 24 or 0, 0, 0, 18), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
 		Text = WMiniText, TextColor3 = Theme["Color Dark Text"], BackgroundTransparency = 1,
 		TextXAlignment = "Left", TextSize = 10, Font = Enum.Font.Gotham, Name = "SubTitle"
 	}), "DarkText")
@@ -2214,7 +2214,7 @@ function kynx:MakeWindow(Configs)
 	end)
 	local ButtonsFolder = Create("Folder", TopBar, {Name = "Buttons"})
 	local CloseButton = Create("ImageButton", {
-		Size = UDim2.new(0, 16, 0, 16), Position = UDim2.new(1, -8, 0.5),
+		Size = UDim2.new(0, 16, 0, 16), Position = UDim2.new(1, -8, 0.2),
 		AnchorPoint = Vector2.new(1, 0.5), BackgroundTransparency = 1,
 		Image = "rbxassetid://10747384394", AutoButtonColor = false, Name = "Close"
 	})
