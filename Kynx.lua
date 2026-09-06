@@ -318,13 +318,23 @@ local function ButtonFrame(Instance, Title, Description, HolderSize)
 	}), "DarkText")
 	local Frame = Make("Button", Instance, {Size = UDim2.new(1, 0, 0, 28), AutomaticSize = "Y", Name = "Option"})
 	Make("Corner", Frame, UDim.new(0, 10))
-	local Shine = InsertTheme(Create("Frame", Frame, {
-		Size = UDim2.new(1, 0, 0, 1),
-		Position = UDim2.new(0, 0, 0, 0),
-		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-		BackgroundTransparency = 0.15,
+	
+	local BorderLine = InsertTheme(Create("Frame", Frame, {
+		Size = UDim2.new(0.9, 0, 0, 0.5),
+		Position = UDim2.new(0.05, 0, 1, -1),
+		BackgroundColor3 = Color3.fromRGB(60, 60, 70),
+		BackgroundTransparency = 0.5,
 		BorderSizePixel = 0
 	}), "Frame")
+	
+	local Shine = InsertTheme(Create("Frame", Frame, {
+		Size = UDim2.new(0.95, 0, 0, 1),
+		Position = UDim2.new(0.025, 0, 0, 0),
+		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		BackgroundTransparency = 0.06,
+		BorderSizePixel = 0
+	}), "Frame")
+	
 	LabelHolder = Create("Frame", Frame, {
 		AutomaticSize = "Y",
 		BackgroundTransparency = 1,
@@ -436,13 +446,15 @@ function kynx:MakeWindow(Configs)
 	end
 	Make("Gradient", MainFrame, {Rotation = 45})MakeDrag(MainFrame)
 	local MainCorner = Make("Corner", MainFrame, UDim.new(0, 16))
-	local ShineFrame = InsertTheme(Create("Frame", MainFrame, {
-		Size = UDim2.new(1, 0, 0, 1),
-		Position = UDim2.new(0, 0, 0, 0),
-		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-		BackgroundTransparency = 0.08,
+	
+	local TopBorder = InsertTheme(Create("Frame", MainFrame, {
+		Size = UDim2.new(0.94, 0, 0, 0.5),
+		Position = UDim2.new(0.03, 0, 0, 4),
+		BackgroundColor3 = Color3.fromRGB(60, 60, 70),
+		BackgroundTransparency = 0.3,
 		BorderSizePixel = 0
 	}), "Frame")
+	
 	local Components = Create("Folder", MainFrame, {Name = "Components"})
 	local DropdownHolder = Create("Folder", ScreenGui, {Name = "Dropdown"})
 	local TopBar = Create("Frame", Components, {Size = UDim2.new(1, 0, 0, 48), BackgroundTransparency = 1, Name = "Top Bar"})
@@ -456,13 +468,13 @@ function kynx:MakeWindow(Configs)
 		}), "Text")
 	end
 	local Title = InsertTheme(Create("TextLabel", TitleHolder, {
-		Position = UDim2.new(WIcon and 22 or 0, 0, 0, -2), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
+		Position = UDim2.new(WIcon and 22 or 0, 0, 0, 2), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
 		Text = WTitle, TextXAlignment = "Left", TextSize = 15,
 		TextColor3 = Theme["Color Text"], BackgroundTransparency = 1,
 		Font = Enum.Font.GothamBold, Name = "Title"
 	}), "Text")
 	local SubTitle = InsertTheme(Create("TextLabel", TitleHolder, {
-		Position = UDim2.new(WIcon and 22 or 0, 0, 0, 17), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
+		Position = UDim2.new(WIcon and 22 or 0, 0, 0, 20), AnchorPoint = Vector2.new(0, 0), AutomaticSize = "XY",
 		Text = WMiniText, TextColor3 = Theme["Color Dark Text"], BackgroundTransparency = 1,
 		TextXAlignment = "Left", TextSize = 10, Font = Enum.Font.Gotham, Name = "SubTitle"
 	}), "DarkText")
