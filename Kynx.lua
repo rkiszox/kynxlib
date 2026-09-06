@@ -12,15 +12,15 @@ local kynx = {
 	Themes = {
 		kynx = {
 			["Color Hub 1"] = ColorSequence.new({
-				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(30, 30, 30)),
-				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(20, 20, 20)),
-				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(30, 30, 30))
+				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
+				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(255, 255, 255)),
+				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 255, 255))
 			}),
-			["Color Hub 2"] = Color3.fromRGB(25, 25, 25),
-			["Color Stroke"] = Color3.fromRGB(60, 60, 60),
-			["Color Theme"] = Color3.fromRGB(255, 255, 255),
-			["Color Text"] = Color3.fromRGB(255, 255, 255),
-			["Color Dark Text"] = Color3.fromRGB(180, 180, 180)
+			["Color Hub 2"] = Color3.fromRGB(255, 255, 255),
+			["Color Stroke"] = Color3.fromRGB(255, 255, 255),
+			["Color Theme"] = Color3.fromRGB(0, 0, 0),
+			["Color Text"] = Color3.fromRGB(0, 0, 0),
+			["Color Dark Text"] = Color3.fromRGB(80, 80, 80)
 		}
 	},
 	Info = {Version = "1.0.0"},
@@ -40,7 +40,29 @@ local kynx = {
 		["list"] = "rbxassetid://10723433811",
 		["edit"] = "rbxassetid://10734883598",
 		["gauge"] = "rbxassetid://10723395708",
-		["palette"] = "rbxassetid://10734910430"
+		["palette"] = "rbxassetid://10734910430",
+		["user"] = "rbxassetid://10747373176",
+		["users"] = "rbxassetid://10747373426",
+		["search"] = "rbxassetid://10734943674",
+		["plus"] = "rbxassetid://10734924532",
+		["minus"] = "rbxassetid://10734896206",
+		["x"] = "rbxassetid://10747384394",
+		["check"] = "rbxassetid://10709790644",
+		["lock"] = "rbxassetid://10723434711",
+		["unlock"] = "rbxassetid://10747366027",
+		["star"] = "rbxassetid://10734966248",
+		["heart"] = "rbxassetid://10723406885",
+		["flag"] = "rbxassetid://10723375890",
+		["bookmark"] = "rbxassetid://10709782154",
+		["cog"] = "rbxassetid://116544501716299",
+		["download"] = "rbxassetid://134814648082393",
+		["upload"] = "rbxassetid://10747366434",
+		["folder"] = "rbxassetid://10723387563",
+		["file"] = "rbxassetid://10723374641",
+		["image"] = "rbxassetid://10723415040",
+		["video"] = "rbxassetid://10747374938",
+		["music"] = "rbxassetid://10734905958",
+		["camera"] = "rbxassetid://10709789686"
 	}
 }
 
@@ -262,7 +284,6 @@ end
 local Theme = kynx.Themes[kynx.Save.Theme]
 
 local function AddEle(Name, Func) kynx.Elements[Name] = Func end
-
 local function Make(Ele, Instance, props, ...)
 	if not kynx.Elements[Ele] then return end
 	local Element = kynx.Elements[Ele](Instance, props, ...)
@@ -315,8 +336,6 @@ local function GetColor(Instance)
 	elseif Instance:IsA("ScrollingFrame") then 
 		return "ScrollBarImageColor3"
 	elseif Instance:IsA("UIStroke") then 
-		return "Color"
-	elseif Instance:IsA("UICorner") then
 		return "Color"
 	end
 	return "BackgroundColor3"
