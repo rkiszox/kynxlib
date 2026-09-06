@@ -1305,4 +1305,4 @@ function kynx:MakeWindow(Configs)
 	return Window
 end
 
-return KYNC
+return kynx
