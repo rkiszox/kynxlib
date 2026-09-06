@@ -1748,9 +1748,8 @@ local kynx = {
 	["zodiac-scorpio"] = "rbxassetid://113640924054631",
 	["zodiac-taurus"] = "rbxassetid://123053219704400",
 	["zodiac-virgo"] = "rbxassetid://99462994613661"
-	}
+   }
 }
-
 
 local ViewportSize = workspace.CurrentCamera.ViewportSize
 local UIScale = ViewportSize.Y / 450
