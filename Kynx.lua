@@ -2009,6 +2009,22 @@ AddEle("Gradient", function(parent, props, ...)
 	return New
 end)
 
+local function GetColor(Instance)
+	if not Instance then return "BackgroundColor3" end
+	if Instance:IsA("Frame") then 
+		return "BackgroundColor3"
+	elseif Instance:IsA("ImageLabel") or Instance:IsA("ImageButton") then 
+		return "ImageColor3"
+	elseif Instance:IsA("TextLabel") or Instance:IsA("TextButton") or Instance:IsA("TextBox") then 
+		return "TextColor3"
+	elseif Instance:IsA("ScrollingFrame") then 
+		return "ScrollBarImageColor3"
+	elseif Instance:IsA("UIStroke") then 
+		return "Color"
+	end
+	return "BackgroundColor3"
+end
+
 local function ButtonFrame(Instance, Title, Description, HolderSize)
 	local TitleL = InsertTheme(Create("TextLabel", {
 		Font = Enum.Font.GothamMedium,
@@ -2074,15 +2090,6 @@ local function ButtonFrame(Instance, Title, Description, HolderSize)
 	return Frame, Label
 end
 
-local function GetColor(Instance)
-	if Instance:IsA("Frame") then return "BackgroundColor3"
-	elseif Instance:IsA("ImageLabel") then return "ImageColor3"
-	elseif Instance:IsA("TextLabel") then return "TextColor3"
-	elseif Instance:IsA("ScrollingFrame") then return "ScrollBarImageColor3"
-	elseif Instance:IsA("UIStroke") then return "Color" end
-	return ""
-end
-
 function kynx:GetIcon(index)
 	if type(index) ~= "string" or index:find("rbxassetid://") or #index == 0 then return index end
 	local firstMatch = nil
@@ -2102,13 +2109,56 @@ function kynx:SetTheme(NewTheme)
 	Theme = kynx.Themes[NewTheme]
 	Connection:FireConnection("ThemeChanged", NewTheme)
 	table.foreach(kynx.Instances, function(_,Val)
-		if Val.Type == "Gradient" then Val.Instance.Color = Theme["Color Hub 1"]
-		elseif Val.Type == "Frame" then Val.Instance.BackgroundColor3 = Theme["Color Hub 2"]
-		elseif Val.Type == "Stroke" then Val.Instance[GetColor(Val.Instance)] = Theme["Color Stroke"]
-		elseif Val.Type == "Theme" then Val.Instance[GetColor(Val.Instance)] = Theme["Color Theme"]
-		elseif Val.Type == "Text" then Val.Instance[GetColor(Val.Instance)] = Theme["Color Text"]
-		elseif Val.Type == "DarkText" then Val.Instance[GetColor(Val.Instance)] = Theme["Color Dark Text"]
-		elseif Val.Type == "ScrollBar" then Val.Instance[GetColor(Val.Instance)] = Theme["Color Theme"] end
+		if Val.Type == "Gradient" then 
+			if Val.Instance then Val.Instance.Color = Theme["Color Hub 1"] end
+		elseif Val.Type == "Frame" then 
+			if Val.Instance then Val.Instance.BackgroundColor3 = Theme["Color Hub 2"] end
+		elseif Val.Type == "Stroke" then 
+			if Val.Instance then 
+				local prop = GetColor(Val.Instance)
+				if prop == "Color" then
+					Val.Instance.Color = Theme["Color Stroke"]
+				else
+					Val.Instance[prop] = Theme["Color Stroke"]
+				end
+			end
+		elseif Val.Type == "Theme" then 
+			if Val.Instance then 
+				local prop = GetColor(Val.Instance)
+				if prop == "Color" then
+					Val.Instance.Color = Theme["Color Theme"]
+				else
+					Val.Instance[prop] = Theme["Color Theme"]
+				end
+			end
+		elseif Val.Type == "Text" then 
+			if Val.Instance then 
+				local prop = GetColor(Val.Instance)
+				if prop == "Color" then
+					Val.Instance.Color = Theme["Color Text"]
+				else
+					Val.Instance[prop] = Theme["Color Text"]
+				end
+			end
+		elseif Val.Type == "DarkText" then 
+			if Val.Instance then 
+				local prop = GetColor(Val.Instance)
+				if prop == "Color" then
+					Val.Instance.Color = Theme["Color Dark Text"]
+				else
+					Val.Instance[prop] = Theme["Color Dark Text"]
+				end
+			end
+		elseif Val.Type == "ScrollBar" then 
+			if Val.Instance then 
+				local prop = GetColor(Val.Instance)
+				if prop == "Color" then
+					Val.Instance.Color = Theme["Color Theme"]
+				else
+					Val.Instance[prop] = Theme["Color Theme"]
+				end
+			end
+		end
 	end)
 end
 
