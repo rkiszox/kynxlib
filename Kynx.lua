@@ -1748,7 +1748,7 @@ local kynx = {
 	["zodiac-scorpio"] = "rbxassetid://113640924054631",
 	["zodiac-taurus"] = "rbxassetid://123053219704400",
 	["zodiac-virgo"] = "rbxassetid://99462994613661",
-		["lock"] = "rbxassetid://133316714173373",
+		["lock"] = "rbxassetid://133316714373173",
 		["resize"] = "rbxassetid://73085922906397"
 	}
 }
@@ -2033,7 +2033,7 @@ local function ButtonFrame(Instance, Title, Description, HolderSize, Icon, Locke
 		Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
 		local LockIcon = Create("ImageLabel", Frame, {
 			Size = UDim2.new(0, 20, 0, 20),
-			Position = UDim2.new(0.5, 0, 0.5, 0),
+			Position = UDim2.new(0.5, 0, 0.4, 0),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundTransparency = 1,
 			Image = "rbxassetid://133316714173373",
@@ -2329,17 +2329,26 @@ function kynx:MakeWindow(Configs)
 	local ControlSize1, ControlSize2
 	if WResizable and not WLocked then
 		ControlSize1 = MakeDrag(Create("ImageButton", MainFrame, {
-			Size = UDim2.new(0, 35, 0, 35), Position = MainFrame.Size,
-			Active = true, AnchorPoint = Vector2.new(0.8, 0.8),
-			BackgroundTransparency = 1, Name = "Control Hub Size",
-			Image = "rbxassetid://73085922906397"
+			Size = UDim2.new(0, 24, 0, 24), 
+			Position = UDim2.new(1, -6, 1, -6),
+			AnchorPoint = Vector2.new(1, 1), 
+			Active = true,
+			BackgroundTransparency = 1, 
+			Name = "Control Hub Size",
+			Image = "rbxassetid://73085922906397",
+			ImageColor3 = Theme["Color Dark Text"],
+			ImageTransparency = 0.5
 		}))
 		ControlSize2 = MakeDrag(Create("ImageButton", MainFrame, {
-			Size = UDim2.new(0, 20, 1, -30),
-			Position = UDim2.new(0, MainScroll.Size.X.Offset, 1, 0),
-			AnchorPoint = Vector2.new(0.5, 1), Active = true,
-			BackgroundTransparency = 1, Name = "Control Tab Size",
-			Image = "rbxassetid://73085922906397"
+			Size = UDim2.new(0, 16, 0, 16),
+			Position = UDim2.new(0, MainScroll.Size.X.Offset - 2, 1, -6),
+			AnchorPoint = Vector2.new(0.5, 1), 
+			Active = true,
+			BackgroundTransparency = 1, 
+			Name = "Control Tab Size",
+			Image = "rbxassetid://73085922906397",
+			ImageColor3 = Theme["Color Dark Text"],
+			ImageTransparency = 0.5
 		}))
 	else
 		ControlSize1 = Create("ImageButton", MainFrame, {
