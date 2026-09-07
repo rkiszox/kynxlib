@@ -32,7 +32,7 @@ local kynx = {
 	Options = {},
 	Flags = {},
 	Tabs = {},
-    	Icons = {
+		Icons = {
     ["a-arrow-down"] = "rbxassetid://92867583610071",
 	["a-arrow-up"] = "rbxassetid://132318504999733",
 	["a-large-small"] = "rbxassetid://111491496660216",
@@ -1747,9 +1747,10 @@ local kynx = {
 	["zodiac-sagittarius"] = "rbxassetid://82651026742181",
 	["zodiac-scorpio"] = "rbxassetid://113640924054631",
 	["zodiac-taurus"] = "rbxassetid://123053219704400",
-	["zodiac-virgo"] = "rbxassetid://99462994613661", 
-	["lock"] = "rbxassetid://73085922906397"
-  }		
+	["zodiac-virgo"] = "rbxassetid://99462994613661",
+		["lock"] = "rbxassetid://133316714173373",
+		["resize"] = "rbxassetid://73085922906397"
+	}
 }
 
 local ViewportSize = workspace.CurrentCamera.ViewportSize
@@ -2035,11 +2036,23 @@ local function ButtonFrame(Instance, Title, Description, HolderSize, Icon, Locke
 			Position = UDim2.new(0.5, 0, 0.5, 0),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundTransparency = 1,
-			Image = "rbxassetid://73085922906397",
+			Image = "rbxassetid://133316714173373",
 			ImageColor3 = Theme["Color Dark Text"],
 			ZIndex = 3
 		})
 		Make("Corner", LockIcon, UDim.new(0.5, 0))
+		local LockText = Create("TextLabel", Frame, {
+			Size = UDim2.new(1, 0, 0, 14),
+			Position = UDim2.new(0.5, 0, 0, 4),
+			AnchorPoint = Vector2.new(0.5, 0),
+			BackgroundTransparency = 1,
+			Text = "LOCKED",
+			TextColor3 = Theme["Color Dark Text"],
+			TextSize = 9,
+			Font = Enum.Font.GothamBold,
+			TextXAlignment = "Center",
+			ZIndex = 3
+		})
 	end
 
 	if Icon and Icon ~= "" and not Locked then
@@ -2186,9 +2199,11 @@ function kynx:MakeWindow(Configs)
 
 	if WBackground and WBackground:find("rbxassetid://") then
 		MainFrame.Image = WBackground
-		MainFrame.BackgroundTransparency = 1
+		MainFrame.BackgroundTransparency = 0
 		MainFrame.ImageTransparency = 0
 		MainFrame.ScaleType = Enum.ScaleType.Crop
+	else
+		MainFrame.BackgroundTransparency = 0.03
 	end
 
 	if WLocked then
@@ -2201,15 +2216,27 @@ function kynx:MakeWindow(Configs)
 		})
 		local LockIcon = Create("ImageLabel", LockOverlay, {
 			Size = UDim2.new(0, 50, 0, 50),
-			Position = UDim2.new(0.5, 0, 0.5, 0),
+			Position = UDim2.new(0.5, 0, 0.4, 0),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundTransparency = 1,
-			Image = "rbxassetid://73085922906397",
+			Image = "rbxassetid://133316714173373",
 			ImageColor3 = Theme["Color Dark Text"],
 			ImageTransparency = 0.5,
 			ZIndex = 11
 		})
 		Make("Corner", LockIcon, UDim.new(0.5, 0))
+		local LockText = Create("TextLabel", LockOverlay, {
+			Size = UDim2.new(1, 0, 0, 20),
+			Position = UDim2.new(0.5, 0, 0.6, 0),
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			BackgroundTransparency = 1,
+			Text = "LOCKED",
+			TextColor3 = Theme["Color Dark Text"],
+			TextSize = 14,
+			Font = Enum.Font.GothamBold,
+			TextXAlignment = "Center",
+			ZIndex = 11
+		})
 	end
 
 	Make("Gradient", MainFrame, {Rotation = 45})
@@ -2277,14 +2304,26 @@ function kynx:MakeWindow(Configs)
 		})
 		local LockIcon2 = Create("ImageLabel", LockOverlay, {
 			Size = UDim2.new(0, 30, 0, 30),
-			Position = UDim2.new(0.5, 0, 0.5, 0),
+			Position = UDim2.new(0.5, 0, 0.45, 0),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundTransparency = 1,
-			Image = "rbxassetid://73085922906397",
+			Image = "rbxassetid://133316714173373",
 			ImageColor3 = Theme["Color Dark Text"],
 			ZIndex = 6
 		})
 		Make("Corner", LockIcon2, UDim.new(0.5, 0))
+		local LockText2 = Create("TextLabel", LockOverlay, {
+			Size = UDim2.new(1, 0, 0, 16),
+			Position = UDim2.new(0.5, 0, 0.6, 0),
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			BackgroundTransparency = 1,
+			Text = "LOCKED",
+			TextColor3 = Theme["Color Dark Text"],
+			TextSize = 12,
+			Font = Enum.Font.GothamBold,
+			TextXAlignment = "Center",
+			ZIndex = 6
+		})
 	end
 	
 	local ControlSize1, ControlSize2
@@ -2292,13 +2331,15 @@ function kynx:MakeWindow(Configs)
 		ControlSize1 = MakeDrag(Create("ImageButton", MainFrame, {
 			Size = UDim2.new(0, 35, 0, 35), Position = MainFrame.Size,
 			Active = true, AnchorPoint = Vector2.new(0.8, 0.8),
-			BackgroundTransparency = 1, Name = "Control Hub Size"
+			BackgroundTransparency = 1, Name = "Control Hub Size",
+			Image = "rbxassetid://73085922906397"
 		}))
 		ControlSize2 = MakeDrag(Create("ImageButton", MainFrame, {
 			Size = UDim2.new(0, 20, 1, -30),
 			Position = UDim2.new(0, MainScroll.Size.X.Offset, 1, 0),
 			AnchorPoint = Vector2.new(0.5, 1), Active = true,
-			BackgroundTransparency = 1, Name = "Control Tab Size"
+			BackgroundTransparency = 1, Name = "Control Tab Size",
+			Image = "rbxassetid://73085922906397"
 		}))
 	else
 		ControlSize1 = Create("ImageButton", MainFrame, {
@@ -2474,7 +2515,7 @@ function kynx:MakeWindow(Configs)
 				Position = UDim2.new(1, -8, 0.5),
 				AnchorPoint = Vector2.new(1, 0.5),
 				BackgroundTransparency = 1,
-				Image = "rbxassetid://73085922906397",
+				Image = "rbxassetid://133316714173373",
 				ImageColor3 = Theme["Color Dark Text"]
 			})
 		end
@@ -2520,14 +2561,26 @@ function kynx:MakeWindow(Configs)
 			})
 			local LockIcon2 = Create("ImageLabel", LockOverlay, {
 				Size = UDim2.new(0, 30, 0, 30),
-				Position = UDim2.new(0.5, 0, 0.5, 0),
+				Position = UDim2.new(0.5, 0, 0.45, 0),
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 1,
-				Image = "rbxassetid://73085922906397",
+				Image = "rbxassetid://133316714173373",
 				ImageColor3 = Theme["Color Dark Text"],
 				ZIndex = 6
 			})
 			Make("Corner", LockIcon2, UDim.new(0.5, 0))
+			local LockText2 = Create("TextLabel", LockOverlay, {
+				Size = UDim2.new(1, 0, 0, 16),
+				Position = UDim2.new(0.5, 0, 0.6, 0),
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				BackgroundTransparency = 1,
+				Text = "LOCKED",
+				TextColor3 = Theme["Color Dark Text"],
+				TextSize = 12,
+				Font = Enum.Font.GothamBold,
+				TextXAlignment = "Center",
+				ZIndex = 6
+			})
 		end
 		
 		table.insert(ContainerList, Container)
@@ -2581,11 +2634,23 @@ function kynx:MakeWindow(Configs)
 					Position = UDim2.new(1, -8, 0.5),
 					AnchorPoint = Vector2.new(1, 0.5),
 					BackgroundTransparency = 1,
-					Image = "rbxassetid://73085922906397",
+					Image = "rbxassetid://133316714173373",
 					ImageColor3 = Theme["Color Dark Text"]
 				})
+				local LockText = Create("TextLabel", SectionFrame, {
+					Size = UDim2.new(1, -30, 0, 12),
+					Position = UDim2.new(0.5, 0, 0.5, 0),
+					AnchorPoint = Vector2.new(0.5, 0.5),
+					BackgroundTransparency = 1,
+					Text = "LOCKED",
+					TextColor3 = Theme["Color Dark Text"],
+					TextSize = 8,
+					Font = Enum.Font.GothamBold,
+					TextXAlignment = "Center",
+					ZIndex = 2
+				})
 			end
-			if SectionIcon and SectionIcon:find("rbxassetid://") then
+			if SectionIcon and SectionIcon:find("rbxassetid://") and not SectionLocked then
 				InsertTheme(Create("ImageLabel", SectionFrame, {
 					Size = UDim2.new(0, 14, 0, 14), Position = UDim2.new(0, 5, 0.5),
 					AnchorPoint = Vector2.new(0, 0.5), Image = SectionIcon,
@@ -2629,23 +2694,40 @@ function kynx:MakeWindow(Configs)
 			if PLocked then
 				Frame.BackgroundTransparency = 0.5
 				Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
-				local LockIcon = Create("ImageLabel", Frame, {
+				local LockOverlay = Create("Frame", Frame, {
+					Size = UDim2.new(1, 0, 1, 0),
+					BackgroundTransparency = 1,
+					ZIndex = 3
+				})
+				local LockIcon = Create("ImageLabel", LockOverlay, {
 					Size = UDim2.new(0, 20, 0, 20),
-					Position = UDim2.new(0.5, 0, 0.5, 0),
+					Position = UDim2.new(0.5, 0, 0.4, 0),
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					BackgroundTransparency = 1,
-					Image = "rbxassetid://73085922906397",
+					Image = "rbxassetid://133316714173373",
 					ImageColor3 = Theme["Color Dark Text"],
 					ZIndex = 3
 				})
 				Make("Corner", LockIcon, UDim.new(0.5, 0))
+				local LockText = Create("TextLabel", LockOverlay, {
+					Size = UDim2.new(1, 0, 0, 14),
+					Position = UDim2.new(0.5, 0, 0.65, 0),
+					AnchorPoint = Vector2.new(0.5, 0.5),
+					BackgroundTransparency = 1,
+					Text = "LOCKED",
+					TextColor3 = Theme["Color Dark Text"],
+					TextSize = 10,
+					Font = Enum.Font.GothamBold,
+					TextXAlignment = "Center",
+					ZIndex = 3
+				})
 			end
 
 			local BGImage = nil
 			if PBackground and PBackground:find("rbxassetid://") then
 				BGImage = Create("ImageLabel", Frame, {
 					Size = UDim2.new(1, 0, 1, 0),
-					BackgroundTransparency = 1,
+					BackgroundTransparency = 0,
 					Image = PBackground,
 					ImageTransparency = 0,
 					ScaleType = Enum.ScaleType.Crop,
@@ -3201,7 +3283,7 @@ function kynx:MakeWindow(Configs)
 				ClearTextOnFocus = TClearText, PlaceholderText = TPlaceholderText, Text = ""
 			}), "Text")
 			if TLocked then
-				TextBoxInput.Text = "Locked"
+				TextBoxInput.Text = "LOCKED"
 				TextBoxInput.TextColor3 = Color3.fromRGB(150, 150, 150)
 				TextBoxInput.Active = false
 			end
@@ -3239,16 +3321,33 @@ function kynx:MakeWindow(Configs)
 			if DLocked then
 				InviteHolder.BackgroundTransparency = 0.5
 				InviteHolder.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
-				local LockIcon = Create("ImageLabel", InviteHolder, {
+				local LockOverlay = Create("Frame", InviteHolder, {
+					Size = UDim2.new(1, 0, 1, 0),
+					BackgroundTransparency = 1,
+					ZIndex = 3
+				})
+				local LockIcon = Create("ImageLabel", LockOverlay, {
 					Size = UDim2.new(0, 20, 0, 20),
-					Position = UDim2.new(0.5, 0, 0.5, 0),
+					Position = UDim2.new(0.5, 0, 0.45, 0),
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					BackgroundTransparency = 1,
-					Image = "rbxassetid://73085922906397",
+					Image = "rbxassetid://133316714173373",
 					ImageColor3 = Theme["Color Dark Text"],
 					ZIndex = 3
 				})
 				Make("Corner", LockIcon, UDim.new(0.5, 0))
+				local LockText = Create("TextLabel", LockOverlay, {
+					Size = UDim2.new(1, 0, 0, 14),
+					Position = UDim2.new(0.5, 0, 0.65, 0),
+					AnchorPoint = Vector2.new(0.5, 0.5),
+					BackgroundTransparency = 1,
+					Text = "LOCKED",
+					TextColor3 = Theme["Color Dark Text"],
+					TextSize = 10,
+					Font = Enum.Font.GothamBold,
+					TextXAlignment = "Center",
+					ZIndex = 3
+				})
 			end
 			local InviteLabel = Create("TextLabel", InviteHolder, {
 				Size = UDim2.new(1, 0, 0, 15), Position = UDim2.new(0, 5),
@@ -3285,7 +3384,7 @@ function kynx:MakeWindow(Configs)
 			})Make("Corner", JoinButton, UDim.new(0, 8))
 			if DLocked then
 				JoinButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-				JoinButton.Text = "Locked"
+				JoinButton.Text = "LOCKED"
 			end
 			local ClickDelay
 			if not DLocked then
