@@ -32,7 +32,7 @@ local kynx = {
 	Options = {},
 	Flags = {},
 	Tabs = {},
-		Icons = {
+	Icons = {
     ["a-arrow-down"] = "rbxassetid://92867583610071",
 	["a-arrow-up"] = "rbxassetid://132318504999733",
 	["a-large-small"] = "rbxassetid://111491496660216",
@@ -1748,7 +1748,7 @@ local kynx = {
 	["zodiac-scorpio"] = "rbxassetid://113640924054631",
 	["zodiac-taurus"] = "rbxassetid://123053219704400",
 	["zodiac-virgo"] = "rbxassetid://99462994613661"
-	}
+  }
 }
 
 local ViewportSize = workspace.CurrentCamera.ViewportSize
@@ -2268,7 +2268,10 @@ function kynx:MakeWindow(Configs)
 	})
 	SetChildren(ButtonsFolder, {CloseButton})
 	
-	local DialogScreen
+	local DialogScreen = nil
+	local Minimized, SaveSize, WaitClick
+	local Window, FirstTab = {}, false
+	
 	function Window:CloseBtn()
 		if DialogScreen then return end
 		if Minimized then Window:MinimizeBtn() end
@@ -2335,8 +2338,6 @@ function kynx:MakeWindow(Configs)
 		end)
 	end
 	
-	local Minimized, SaveSize, WaitClick
-	local Window, FirstTab = {}, false
 	function Window:MinimizeBtn()
 		if WaitClick then return end
 		WaitClick = true
@@ -2965,8 +2966,7 @@ function kynx:MakeWindow(Configs)
 				CallbackSelected()
 				UpdateSelected()
 			end
-			if not DLocked then
-				Button.Activated:Connect(Minimize)
+			if not DLocked then				Button.Activated:Connect(Minimize)
 				NoClickFrame.MouseButton1Down:Connect(Disable)
 				NoClickFrame.MouseButton1Click:Connect(Disable)
 				MainFrame:GetPropertyChangedSignal("Visible"):Connect(Disable)
