@@ -2300,7 +2300,7 @@ function kynx:MakeWindow(Configs)
 		})
 		local DText = Create("TextLabel", DialogFrame, {
 			Font = Enum.Font.GothamMedium, Size = UDim2.new(1, -20, 0, 20),
-			Text = "Close UI?", TextXAlignment = "Center",
+			Text = "Do you want to <font color='#FF0000'>close</font> the ui?", TextXAlignment = "Center",
 			TextColor3 = Theme["Color Dark Text"], TextSize = 12,
 			Position = UDim2.fromOffset(0, 30), BackgroundTransparency = 1,
 			ZIndex = 1000000000
