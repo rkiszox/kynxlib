@@ -335,8 +335,8 @@ local function ButtonFrame(Instance, Title, Description, HolderSize, Icon, Locke
 		Make("Corner", LockIcon, UDim.new(0.5, 0))
 		local LockText = Create("TextLabel", Frame, {
 			Size = UDim2.new(1, 0, 0, 14),
-			Position = UDim2.new(0.5, 0, 0, 4),
-			AnchorPoint = Vector2.new(0.5, 0),
+			Position = UDim2.new(0.5, 0, 0.65, 0),
+			AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundTransparency = 1,
 			Text = "LOCKED",
 			TextColor3 = Theme["Color Dark Text"],
@@ -723,52 +723,6 @@ function kynx:MakeWindow(Configs)
 		end
 		local TabSelect = Make("Button", MainScroll, {Size = UDim2.new(1, 0, 0, 24)})Make("Corner", TabSelect, UDim.new(0, 6))
 		
-		if TLocked then
-			TabSelect.BackgroundTransparency = 0
-			TabSelect.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
-			local LockOverlay = Create("Frame", TabSelect, {
-				Size = UDim2.new(1, 0, 1, 0),
-				BackgroundTransparency = 0.3,
-				BackgroundColor3 = Color3.fromRGB(0, 0, 0),
-				ZIndex = 999999999999
-			})
-			local LockIcon = Create("ImageLabel", LockOverlay, {
-				Size = UDim2.new(0, 20, 0, 20),
-				Position = UDim2.new(0.5, 0, 0.4, 0),
-				AnchorPoint = Vector2.new(0.5, 0.5),
-				BackgroundTransparency = 1,
-				Image = "rbxassetid://133316714173373",
-				ImageColor3 = Theme["Color Dark Text"],
-				ZIndex = 999999999999
-			})
-			Make("Corner", LockIcon, UDim.new(0.5, 0))
-			local LockText = Create("TextLabel", LockOverlay, {
-				Size = UDim2.new(1, 0, 0, 16),
-				Position = UDim2.new(0.5, 0, 0.65, 0),
-				AnchorPoint = Vector2.new(0.5, 0.5),
-				BackgroundTransparency = 1,
-				Text = "LOCKED",
-				TextColor3 = Theme["Color Dark Text"],
-				TextSize = 10,
-				Font = Enum.Font.GothamBold,
-				TextXAlignment = "Center",
-				ZIndex = 999999999999
-			})
-			local TabName = Create("TextLabel", LockOverlay, {
-				Size = UDim2.new(1, 0, 0, 14),
-				Position = UDim2.new(0.5, 0, 0.15, 0),
-				AnchorPoint = Vector2.new(0.5, 0.5),
-				BackgroundTransparency = 1,
-				Text = TName,
-				TextColor3 = Theme["Color Text"],
-				TextSize = 8,
-				Font = Enum.Font.GothamBold,
-				TextXAlignment = "Center",
-				ZIndex = 999999999999,
-				TextTransparency = 0.5
-			})
-		end
-		
 		local LabelTitle = InsertTheme(Create("TextLabel", TabSelect, {
 			Size = UDim2.new(1, TIcon and -25 or -15, 1), Position = UDim2.fromOffset(TIcon and 25 or 15),
 			BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Text = TName,
@@ -777,7 +731,7 @@ function kynx:MakeWindow(Configs)
 			TextTruncate = "AtEnd"
 		}), "Text")
 		local LabelIcon
-		if TIcon and TIcon:find("rbxassetid://") and not TLocked then
+		if TIcon and TIcon:find("rbxassetid://") then
 			LabelIcon = InsertTheme(Create("ImageLabel", TabSelect, {
 				Position = UDim2.new(0, 8, 0.5), Size = UDim2.new(0, 13, 0, 13),
 				AnchorPoint = Vector2.new(0, 0.5), Image = TIcon,
@@ -789,6 +743,21 @@ function kynx:MakeWindow(Configs)
 			Position = UDim2.new(0, 1, 0.5), AnchorPoint = Vector2.new(0, 0.5),
 			BackgroundColor3 = Theme["Color Theme"], BackgroundTransparency = FirstTab and 1 or 0
 		}), "Theme")Make("Corner", Selected, UDim.new(0.5, 0))
+		
+		if TLocked then
+			local LockText = Create("TextLabel", TabSelect, {
+				Size = UDim2.new(0, 0, 0, 12),
+				Position = UDim2.new(1, -4, 0.5),
+				AnchorPoint = Vector2.new(1, 0.5),
+				BackgroundTransparency = 1,
+				Text = "LOCKED",
+				TextColor3 = Color3.fromRGB(200, 50, 50),
+				TextSize = 8,
+				Font = Enum.Font.GothamBold,
+				TextXAlignment = "Right",
+				ZIndex = 2
+			})
+		end
 		
 		local Container = InsertTheme(Create("ScrollingFrame", {
 			Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 1),
@@ -825,7 +794,7 @@ function kynx:MakeWindow(Configs)
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 1,
 				Text = "LOCKED",
-				TextColor3 = Theme["Color Dark Text"],
+				TextColor3 = Color3.fromRGB(200, 50, 50),
 				TextSize = 12,
 				Font = Enum.Font.GothamBold,
 				TextXAlignment = "Center",
@@ -870,9 +839,10 @@ function kynx:MakeWindow(Configs)
 		
 		function Tab:AddDivider()
 			local Divider = Create("Frame", Container, {
-				Size = UDim2.new(1, 0, 0, 2),
+				Size = UDim2.new(0.9, 0, 0, 1.5),
+				Position = UDim2.new(0.05, 0, 0, 0),
 				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-				BackgroundTransparency = 0.3,
+				BackgroundTransparency = 0.15,
 				BorderSizePixel = 0,
 				Name = "Divider"
 			})
@@ -908,7 +878,7 @@ function kynx:MakeWindow(Configs)
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					BackgroundTransparency = 1,
 					Text = "LOCKED",
-					TextColor3 = Theme["Color Dark Text"],
+					TextColor3 = Color3.fromRGB(200, 50, 50),
 					TextSize = 8,
 					Font = Enum.Font.GothamBold,
 					TextXAlignment = "Center",
@@ -949,8 +919,17 @@ function kynx:MakeWindow(Configs)
 				PIcon = false
 			end
 
-			local Frame = Create("Frame", Container, {Size = UDim2.new(1, 0, 0, 28), AutomaticSize = "Y", Name = "Option", BackgroundTransparency = 1, ClipsDescendants = true})
+			local Frame = Create("Frame", Container, {Size = UDim2.new(1, 0, 0, 28), AutomaticSize = "Y", Name = "Option", BackgroundTransparency = 0.5, ClipsDescendants = true})
+			Frame.BackgroundColor3 = Theme["Color Hub 2"]
 			local bgCorner = Make("Corner", Frame, UDim.new(0, 10))
+			
+			local Shine = InsertTheme(Create("Frame", Frame, {
+				Size = UDim2.new(0.95, 0, 0, 1),
+				Position = UDim2.new(0.025, 0, 0, 0),
+				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+				BackgroundTransparency = 0.06,
+				BorderSizePixel = 0
+			}), "Frame")
 
 			if PLocked then
 				Frame.BackgroundTransparency = 0.5
@@ -976,7 +955,7 @@ function kynx:MakeWindow(Configs)
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					BackgroundTransparency = 1,
 					Text = "LOCKED",
-					TextColor3 = Theme["Color Dark Text"],
+					TextColor3 = Color3.fromRGB(200, 50, 50),
 					TextSize = 10,
 					Font = Enum.Font.GothamBold,
 					TextXAlignment = "Center",
@@ -1255,8 +1234,7 @@ function kynx:MakeWindow(Configs)
 				CreateTween({DropFrame, "Position", NewPos, 0.1})
 			end
 			local AddNewOptions, GetOptions, AddOption, RemoveOption, Selected do
-				local Default = type(OpDefault) ~= "table" and {OpDefault} or OpDefault
-				local MultiSelect = DMultiSelect
+				local Default = type(OpDefault) ~= "table" and {OpDefault} or OpDefault				local MultiSelect = DMultiSelect
 				local Options = {}
 				Selected = MultiSelect and {} or CheckFlag(Flag) and GetFlag(Flag) or Default[1]
 				if MultiSelect then
@@ -1530,7 +1508,7 @@ function kynx:MakeWindow(Configs)
 			}), "Text")
 			if TLocked then
 				TextBoxInput.Text = "LOCKED"
-				TextBoxInput.TextColor3 = Color3.fromRGB(150, 150, 150)
+				TextBoxInput.TextColor3 = Color3.fromRGB(200, 50, 50)
 				TextBoxInput.Active = false
 			end
 			local Pencil = Create("ImageLabel", SelectedFrame, {
@@ -1563,7 +1541,10 @@ function kynx:MakeWindow(Configs)
 			local Logo = Configs[2] or Configs.Logo or ""
 			local Invite = Configs[3] or Configs.Invite or ""
 			local DLocked = Configs.Locked or false
-			local InviteHolder = Create("Frame", Container, {Size = UDim2.new(1, 0, 0, 80), Name = "Option", BackgroundTransparency = 1})
+			local InviteHolder = Create("Frame", Container, {Size = UDim2.new(1, 0, 0, 80), Name = "Option", BackgroundTransparency = 0.5, ClipsDescendants = true})
+			InviteHolder.BackgroundColor3 = Theme["Color Hub 2"]
+			local bgCorner = Make("Corner", InviteHolder, UDim.new(0, 10))
+			
 			if DLocked then
 				InviteHolder.BackgroundTransparency = 0.5
 				InviteHolder.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
@@ -1588,7 +1569,7 @@ function kynx:MakeWindow(Configs)
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					BackgroundTransparency = 1,
 					Text = "LOCKED",
-					TextColor3 = Theme["Color Dark Text"],
+					TextColor3 = Color3.fromRGB(200, 50, 50),
 					TextSize = 10,
 					Font = Enum.Font.GothamBold,
 					TextXAlignment = "Center",
