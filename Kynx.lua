@@ -2277,8 +2277,7 @@ function kynx:MakeWindow(Configs)
 		if Minimized then Window:MinimizeBtn() end
 		DialogScreen = Create("Frame", ScreenGui, {
 			Size = UDim2.new(1, 0, 1, 0),
-			BackgroundTransparency = 0.6,
-			BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+			BackgroundTransparency = 1,
 			Active = true,
 			ZIndex = 1000000000
 		})
@@ -2329,12 +2328,6 @@ function kynx:MakeWindow(Configs)
 			DialogScreen:Destroy()
 			DialogScreen = nil
 		end)
-		DialogScreen.InputBegan:Connect(function(Input)
-			if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-				DialogScreen:Destroy()
-				DialogScreen = nil
-			end
-		end)
 	end
 	
 	function Window:MinimizeBtn()
@@ -2371,7 +2364,10 @@ function kynx:MakeWindow(Configs)
 		if type(TabSelect) == "number" then kynx.Tabs[TabSelect].func:Enable()
 		else for _,Tab in pairs(kynx.Tabs) do if Tab.Cont == TabSelect.Cont then Tab.func:Enable() end end end
 	end
+	
 	local ContainerList = {}
+	local ControlSize1, ControlSize2
+	
 	function Window:MakeTab(paste, Configs)
 		if type(paste) == "table" then Configs = paste end
 		local TName = Configs[1] or Configs.Title or "Tab!"
@@ -2448,6 +2444,7 @@ function kynx:MakeWindow(Configs)
 		
 		table.insert(ContainerList, Container)
 		if not FirstTab then Container.Parent = Containers end
+		
 		local function Tabs()
 			if TLocked then return end
 			if Container.Parent then return end
@@ -2480,21 +2477,6 @@ function kynx:MakeWindow(Configs)
 		function Tab:Enable() Tabs() end
 		function Tab:Visible(Bool) Funcs:ToggleVisible(TabSelect, Bool) Funcs:ToggleParent(Container, Bool, Containers) end
 		function Tab:Destroy() TabSelect:Destroy() Container:Destroy() end
-		
-		function Tab:AddDivider()
-			local Divider = Create("Frame", Container, {
-				Size = UDim2.new(0.9, 0, 0, 1.5),
-				Position = UDim2.new(0.05, 0, 0, 0),
-				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-				BackgroundTransparency = 0.15,
-				BorderSizePixel = 0,
-				Name = "Divider"
-			})
-			local DividerObj = {}
-			function DividerObj:Visible(Bool) Funcs:ToggleVisible(Divider, Bool) end
-			function DividerObj:Destroy() Divider:Destroy() end
-			return DividerObj
-		end
 		
 		function Tab:AddSection(Configs)
 			local SectionName = type(Configs) == "string" and Configs or Configs[1] or Configs.Name or Configs.Title or Configs.Section
@@ -3239,6 +3221,53 @@ function kynx:MakeWindow(Configs)
 		end
 		return Tab
 	end
+	
+	if not WLocked then
+		ControlSize1 = MakeDrag(Create("ImageButton", MainFrame, {
+			Size = UDim2.new(0, 24, 0, 24),
+			Position = UDim2.new(1, -6, 1, -6),
+			AnchorPoint = Vector2.new(1, 1),
+			Active = true,
+			BackgroundTransparency = 1,
+			Name = "Control Hub Size",
+			ImageColor3 = Theme["Color Dark Text"],
+			ImageTransparency = 0.5
+		}))
+		ControlSize2 = MakeDrag(Create("ImageButton", MainFrame, {
+			Size = UDim2.new(0, 16, 0, 16),
+			Position = UDim2.new(0, MainScroll.Size.X.Offset - 2, 1, -6),
+			AnchorPoint = Vector2.new(0.5, 1),
+			Active = true,
+			BackgroundTransparency = 1,
+			Name = "Control Tab Size",
+			ImageColor3 = Theme["Color Dark Text"],
+			ImageTransparency = 0.5
+		}))
+		
+		local function ControlSize()
+			if not ControlSize1 or not ControlSize2 then return end
+			local Pos1, Pos2 = ControlSize1.Position, ControlSize2.Position
+			ControlSize1.Position = UDim2.fromOffset(math.clamp(Pos1.X.Offset, 430, 1000), math.clamp(Pos1.Y.Offset, 200, 500))
+			ControlSize2.Position = UDim2.new(0, math.clamp(Pos2.X.Offset, 135, 250), 1, 0)
+			MainScroll.Size = UDim2.new(0, ControlSize2.Position.X.Offset, 1, -TopBar.Size.Y.Offset)
+			Containers.Size = UDim2.new(1, -MainScroll.Size.X.Offset, 1, -TopBar.Size.Y.Offset)
+			MainFrame.Size = ControlSize1.Position
+		end
+		
+		ControlSize1:GetPropertyChangedSignal("Position"):Connect(ControlSize)
+		ControlSize2:GetPropertyChangedSignal("Position"):Connect(ControlSize)
+		ConnectSave(ControlSize1, function()
+			if not Minimized then
+				kynx.Save.UISize = {MainFrame.Size.X.Offset, MainFrame.Size.Y.Offset}
+				SaveJson("kynx library.json", kynx.Save)
+			end
+		end)
+		ConnectSave(ControlSize2, function()
+			kynx.Save.TabSize = MainScroll.Size.X.Offset
+			SaveJson("kynx library.json", kynx.Save)
+		end)
+	end
+	
 	CloseButton.Activated:Connect(Window.CloseBtn)
 	return Window
 end
