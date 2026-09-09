@@ -1748,7 +1748,7 @@ local kynx = {
 	["zodiac-scorpio"] = "rbxassetid://113640924054631",
 	["zodiac-taurus"] = "rbxassetid://123053219704400",
 	["zodiac-virgo"] = "rbxassetid://99462994613661"
-  }
+	}
 }
 
 local ViewportSize = workspace.CurrentCamera.ViewportSize
@@ -2031,7 +2031,7 @@ local function ButtonFrame(Instance, Title, Description, HolderSize, Icon, Locke
 		Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
 		local LockText = Create("TextLabel", Frame, {
 			Size = UDim2.new(1, 0, 0, 14),
-			Position = UDim2.new(0.5, 0, 0.5, 0),
+			Position = UDim2.new(0.5, 0, 0.3, 0),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundTransparency = 1,
 			Text = "LOCKED",
@@ -2284,44 +2284,43 @@ function kynx:MakeWindow(Configs)
 		})
 		
 		local DialogFrame = Create("Frame", DialogScreen, {
-			Active = true, Size = UDim2.fromOffset(250, 150),
+			Active = true, Size = UDim2.fromOffset(220, 120),
 			Position = UDim2.fromScale(0.5, 0.5), AnchorPoint = Vector2.new(0.5, 0.5),
 			BackgroundColor3 = Theme["Color Hub 2"],
 			BackgroundTransparency = 0.05,
 			ZIndex = 1000000000
 		})
 		Make("Gradient", DialogFrame, {Rotation = 45})
-		Make("Corner", DialogFrame, UDim.new(0, 12))
-		DialogFrame.BackgroundTransparency = 0.05
+		Make("Corner", DialogFrame, UDim.new(0, 10))
 		
 		local DTitle = Create("TextLabel", DialogFrame, {
-			Font = Enum.Font.GothamBold, Size = UDim2.new(1, -20, 0, 25),
+			Font = Enum.Font.GothamBold, Size = UDim2.new(1, -20, 0, 20),
 			Text = "Close", TextXAlignment = "Left", TextColor3 = Theme["Color Text"],
-			TextSize = 16, Position = UDim2.fromOffset(15, 5), BackgroundTransparency = 1,
+			TextSize = 15, Position = UDim2.fromOffset(12, 5), BackgroundTransparency = 1,
 			ZIndex = 1000000000
 		})
 		local DText = Create("TextLabel", DialogFrame, {
-			Font = Enum.Font.GothamMedium, Size = UDim2.new(1, -25, 0, 25),
-			Text = "You Want Close Ui?", TextXAlignment = "Center",
-			TextColor3 = Theme["Color Dark Text"], TextSize = 13,
-			Position = UDim2.fromOffset(0, 35), BackgroundTransparency = 1,
-			TextWrapped = true, ZIndex = 1000000000
+			Font = Enum.Font.GothamMedium, Size = UDim2.new(1, -20, 0, 20),
+			Text = "Close UI?", TextXAlignment = "Center",
+			TextColor3 = Theme["Color Dark Text"], TextSize = 12,
+			Position = UDim2.fromOffset(0, 30), BackgroundTransparency = 1,
+			ZIndex = 1000000000
 		})
 		local ButtonsHolder = Create("Frame", DialogFrame, {
-			Size = UDim2.fromScale(1, 0.35), Position = UDim2.fromScale(0, 1),
+			Size = UDim2.fromScale(1, 0.3), Position = UDim2.fromScale(0, 1),
 			AnchorPoint = Vector2.new(0, 1), BackgroundColor3 = Theme["Color Hub 2"],
 			BackgroundTransparency = 1, ZIndex = 1000000000
 		}, {
-			Create("UIListLayout", {Padding = UDim.new(0, 10), VerticalAlignment = "Center", FillDirection = "Horizontal", HorizontalAlignment = "Center"})
+			Create("UIListLayout", {Padding = UDim.new(0, 8), VerticalAlignment = "Center", FillDirection = "Horizontal", HorizontalAlignment = "Center"})
 		})
 		
 		local ConfirmButton = Make("Button", ButtonsHolder, {ZIndex = 1000000000})
-		Make("Corner", ConfirmButton, UDim.new(0, 8))
-		SetProps(ConfirmButton, {Text = "Confirm", Font = Enum.Font.GothamBold, TextColor3 = Theme["Color Text"], TextSize = 12, Size = UDim2.new(0, 80, 0, 32)})
+		Make("Corner", ConfirmButton, UDim.new(0, 6))
+		SetProps(ConfirmButton, {Text = "Confirm", Font = Enum.Font.GothamBold, TextColor3 = Theme["Color Text"], TextSize = 12, Size = UDim2.new(0, 60, 0, 28)})
 		
 		local CancelButton = Make("Button", ButtonsHolder, {ZIndex = 1000000000})
-		Make("Corner", CancelButton, UDim.new(0, 8))
-		SetProps(CancelButton, {Text = "Cancel", Font = Enum.Font.GothamBold, TextColor3 = Theme["Color Text"], TextSize = 12, Size = UDim2.new(0, 80, 0, 32)})
+		Make("Corner", CancelButton, UDim.new(0, 6))
+		SetProps(CancelButton, {Text = "Cancel", Font = Enum.Font.GothamBold, TextColor3 = Theme["Color Text"], TextSize = 12, Size = UDim2.new(0, 60, 0, 28)})
 		
 		ConfirmButton.Activated:Connect(function()
 			ScreenGui:Destroy()
@@ -2511,7 +2510,7 @@ function kynx:MakeWindow(Configs)
 				SectionFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
 				local LockText = Create("TextLabel", SectionFrame, {
 					Size = UDim2.new(1, -30, 0, 12),
-					Position = UDim2.new(0.5, 0, 0.5, 0),
+					Position = UDim2.new(0.5, 0, 0.3, 0),
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					BackgroundTransparency = 1,
 					Text = "LOCKED",
@@ -2573,7 +2572,7 @@ function kynx:MakeWindow(Configs)
 				Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
 				local LockText = Create("TextLabel", Frame, {
 					Size = UDim2.new(1, 0, 0, 14),
-					Position = UDim2.new(0.5, 0, 0.5, 0),
+					Position = UDim2.new(0.5, 0, 0.3, 0),
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					BackgroundTransparency = 1,
 					Text = "LOCKED",
@@ -2966,7 +2965,8 @@ function kynx:MakeWindow(Configs)
 				CallbackSelected()
 				UpdateSelected()
 			end
-			if not DLocked then				Button.Activated:Connect(Minimize)
+			if not DLocked then
+				Button.Activated:Connect(Minimize)
 				NoClickFrame.MouseButton1Down:Connect(Disable)
 				NoClickFrame.MouseButton1Click:Connect(Disable)
 				MainFrame:GetPropertyChangedSignal("Visible"):Connect(Disable)
@@ -3172,7 +3172,7 @@ function kynx:MakeWindow(Configs)
 				InviteHolder.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
 				local LockText = Create("TextLabel", InviteHolder, {
 					Size = UDim2.new(1, 0, 0, 14),
-					Position = UDim2.new(0.5, 0, 0.5, 0),
+					Position = UDim2.new(0.5, 0, 0.3, 0),
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					BackgroundTransparency = 1,
 					Text = "LOCKED",
